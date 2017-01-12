@@ -1,8 +1,26 @@
 #!/usr/bin/env python
 
 class Iue():
+    def __init__(self, per, T0):
+        import astropy.units as u
+        from astropy.time import Time, TimeDelta
 
-    def __init__(self, myList):
+        self.per = TimeDelta(per * u.day)
+        self.T0 = Time(T0, format='jd')
+
+    def readIueData(self, myList):
+        '''
+            This method appends 2 attributes to self: self.myInfo and self.mySpec. They correspond to the info about the observation/data and the full spectrum, respectively. Both are saved in pandas data frame format.
+
+            - In order to access the information about the files:
+                self.myInfo.head()
+
+            - In order to access the full spectrum of a given observation:
+                - first find the index of the desired file:
+                idx = self.myInfo[self.myInfo.filename.str.contains("swp42749")].index[0]
+                - now retrieve the wavelength and flux arrays:
+                self.mySpec[idx].wave and self.mySpec[idx].flux
+        '''
         import pandas as pd
         import astropy.units as u
         from astropy.time import Time, TimeDelta
@@ -12,8 +30,8 @@ class Iue():
         dataToBeStored = [
             # [filename, PrimaryHDU, BinTableHDU]
             myList,
-            [ list(fits.open(x))[0] for x in myList ],
-            [ list(fits.open(x))[1] for x in myList ],
+            # [ list(fits.open(x))[0] for x in myList ],
+            # [ list(fits.open(x))[1] for x in myList ],
             # info about observation
             #
             # APERTURE
@@ -34,27 +52,25 @@ class Iue():
         # set column names
         self.myInfo.columns = [
             "filename",
-            "hdu",
-            "binTable",
+            # "hdu",
+            # "binTable",
             # info about observation
             "aperture",
-            "myDatetime",
+            "DateObs",
             "exptime",
             "jdObs",
             "jdMid",
             ]
         # converting DATE + TIME into datetime type so that it can be handled like self.myInfo.datetime.year
-        self.myInfo['myDatetime'] = pd.to_datetime(self.myInfo['myDatetime'], infer_datetime_format=True)
-        # ephemeris from Corcoran et al. 2015
-        per = TimeDelta(5.732436 * u.day)
-        T0 = Time(2456295.674, format='jd')
+        self.myInfo['DateObs'] = pd.to_datetime(self.myInfo['DateObs'], infer_datetime_format=True)
+        # ephemeris
         # T - T0
-        deltaT = self.myInfo['jdMid'] - T0.jd
+        deltaT = self.myInfo['jdMid'] - self.T0.jd
         self.myInfo['deltaT'] = deltaT
         # phase = mod( (T-T0) / per )           V  (T-T0) > 0
         # phase = mod(mod( (T-T0) / per ) + 1)  V  (T-T0) < 0
-        self.myInfo['phase'] = [ ( (dT/per.value)%1 if (dT > T0.jd) else ((dT/per.value)%1+1)%1 ) for dT in deltaT]
-        # read each FITS file and store all the full spectrum
+        self.myInfo['phase'] = [ ( (dT/self.per.value)%1 if (dT > self.T0.jd) else ((dT/self.per.value)%1+1)%1 ) for dT in deltaT]
+        # read each FITS file and store the corresponding full spectrum
         self.mySpec = [ self.createSpec(x) for x in myList ]
 
     def createSpec(self, filename):
@@ -115,48 +131,49 @@ class Iue():
         # containing 'filename', 'order', 'wave', and 'flux'
         return [ self.createSpec(filename) for filename in myList ]
 
+    def findIndexOf(self, pattern):
+        '''
+            Find the unique index corresponding to the name of the file that matches up the provided pattern.
 
+            e.g.: index = iue.findIndexOf("05722")
+        '''
+        import numpy as np
 
-###
-import matplotlib.pyplot as plt
-import numpy as np
-import astropy.io.fits as fits
-from astropy.table import Table
-import json as json
+        try:
+            return self.myInfo[self.myInfo.filename.str.contains(pattern)].index[0]
+        except:
+            print("findIndexOf exception: no match found.")
+            # return None (type(returnedValue) = None)
+            pass
 
-# parse filenames into list
-fileList = json.load( open( "./iueData.json" ) )
-# instantiate an Iue object containing
-# all data inside the instance attribute 'myData'
-iue = Iue( fileList['filename'] )
+    def findByDate(self, start, end):
+        '''
+            Search dataset for data within a given interval in date.
+        '''
+        s = start if start < end else end
+        e = end if start < end else start
+        mask = (self.myInfo['DateObs'] >= s) & (self.myInfo['DateObs'] <= e)
+        return self.myInfo.loc[mask]
 
-# # read and store all spectra
-# # using a JSON file
-# allSpec = iue.getAllSpec("./iueData.json")
-# # using the output from json.load()
-# allSpec2 = iue.getAllSpec(fileList['filename'])
+    def findByPhase(self, start, end):
+        '''
+            Search dataset for data within a given interval in phase.
+        '''
+        s = start if start < end else end
+        e = end if start < end else start
+        mask = (self.myInfo['phase'] >= s) & (self.myInfo['phase'] <= e)
+        return self.myInfo.loc[mask]
 
+class IuePlot():
+    def __init__(self):
+        pass
 
+class IueMerge():
+    def __init__(self):
+        pass
 
+if __name__ == "__main__":
 
-# get the distribution of phase coverage
-# plt.ion()
-# iue.myData.hist(column='phase')
-
-
-
-
-# get all the orders for a file
-# spec = iue.createSpec("./DATA/lwr02241.mxhi")
-
-# # plot all the orders
-# fig, ax = plt.subplots()
-# [ax.plot(res['wave'][i], res['flux'][i], marker='') for i in range(len(res['wave']))]
-# fig.savefig('./RESULTS/spec.pdf')
-# plt.clf()
-# plt.close('all')
-#
-# # plt.ion()
-# # # loop over the orders and plot them
-# # for index in range(61):
-# #     plt.plot(res[0][index], res[1][index], marker='')
+    print("Usage:")
+    print("-> import iue")
+    print("-> iue = Iue()")
