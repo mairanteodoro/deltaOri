@@ -1,12 +1,32 @@
 #!/usr/bin/env python
 
 class Iue():
-    def __init__(self, per, T0):
-        import astropy.units as u
-        from astropy.time import Time, TimeDelta
 
-        self.per = TimeDelta(per * u.day)
-        self.T0 = Time(T0, format='jd')
+    # list with the filename (full path) for all data to be used.
+    # global attribute; will be turned into tuple by .readIueData()
+    myList = ''
+
+    def __init__(self):
+        pass
+
+    def checkMyList(self):
+        '''
+            This method checks for the existence of IUE data.
+        '''
+        import sys
+
+        try:
+            if (type(self.myList) != tuple) or (len(self.myList[0]) == 0):
+                print("")
+                print("### ")
+                print("### WARNING: No IUE data has been loaded yet.")
+                print("###")
+                print("### Please, make sure to run {0}.readIueData(list) first!".format(self.__class__.__name__))
+                print("### ")
+                print("")
+                raise SystemExit()
+        except SystemExit:
+            sys.exit()
 
     def readIueData(self, myList):
         '''
@@ -21,11 +41,14 @@ class Iue():
                 - now retrieve the wavelength and flux arrays:
                 self.mySpec[idx].wave and self.mySpec[idx].flux
         '''
+
         import pandas as pd
         import astropy.units as u
         from astropy.time import Time, TimeDelta
         import astropy.io.fits as fits
         import numpy as np
+
+        self.myList = myList, # <- from now on, this is a tuple!
 
         dataToBeStored = [
             # [filename, PrimaryHDU, BinTableHDU]
@@ -63,30 +86,23 @@ class Iue():
             ]
         # converting DATE + TIME into datetime type so that it can be handled like self.myInfo.datetime.year
         self.myInfo['DateObs'] = pd.to_datetime(self.myInfo['DateObs'], infer_datetime_format=True)
-        # ephemeris
-        # T - T0
-        deltaT = self.myInfo['jdMid'] - self.T0.jd
-        self.myInfo['deltaT'] = deltaT
-        # phase = mod( (T-T0) / per )           V  (T-T0) > 0
-        # phase = mod(mod( (T-T0) / per ) + 1)  V  (T-T0) < 0
-        self.myInfo['phase'] = [ ( (dT/self.per.value)%1 if (dT > self.T0.jd) else ((dT/self.per.value)%1+1)%1 ) for dT in deltaT]
         # read each FITS file and store the corresponding full spectrum
-        self.mySpec = [ self.createSpec(x) for x in myList ]
+        self.mySpec = [ self.getSpec(x) for x in myList ]
 
-    def createSpec(self, filename):
+    def getSpec(self, filename):
         '''
-            This method loops over the orders
-            of a given file and return the full spectrum.
+            This method loops over the orders of a given file and returns a dataframe with columns 'order', 'wave', 'flux', and 'filename'.
         '''
+
+        self.checkMyList()
+
         from astropy.table import Table
         import pandas as pd
         import numpy as np
         import astropy.units as u
 
         # find the filename's index
-        fIndex = self.myInfo.filename[
-            self.myInfo.filename == filename
-        ].index[0]
+        fIndex = self.findIndexOf(filename)
         # read and return data in tabular format
         tb = Table.read(self.myInfo.filename[fIndex], hdu=1)
         wave, flux = [], []
@@ -99,37 +115,44 @@ class Iue():
             flux.append(tb['RIPPLE'][index])
 
         '''
-        Return a dataframe with the
-        spectrum for each order:
-             order   wave    flux
-             -----   -----   -----
-        0    #       []      []
-        1    #       []      []
+        Return a dataframe with the spectrum for each order:
+             order   wave    flux    filename
+             -----   -----   -----   -----
+        0    #       []      []      string
+        1    #       []      []      string
         '''
         return pd.DataFrame({'filename': filename,
                             'order': order,
                             'wave': wave,
                             'flux': flux})
 
-    def getAllSpec (self, fileList):
+    def getAllSpec (self):
         '''
             Return an array where each element is a pandas DataFrame containing data about 'order', 'wave', and 'flux' for the corresponding 'filename'.
 
             e.g.:
-                allSpec = iue.getAllSpec("./iueData.json")
+                iue = Iue()
+                iue.readIueData(file)
+                allSpec = iue.getAllSpec()
                 allSpec[0].head()
                 allSpec[0].filename
                 allSpec[0].order, allSpec[0].wave, allSpec[0].flux
         '''
-        import json as json
 
-        # test if fileList is of type dict or list;
-        # if not, load it into a dict and select the 'filename' key
-        myList = fileList if (type(fileList) == dict or type(fileList) == list) else (json.load( open(fileList) ))['filename']
+        self.checkMyList()
 
         # return an array where each element is a pandas DataFrame
         # containing 'filename', 'order', 'wave', and 'flux'
-        return [ self.createSpec(filename) for filename in myList ]
+        return [ self.getSpec(filename) for filename in self.myList[0] ]
+
+    def mergeOrders(self):
+        '''
+            Loop over the orders and splice them together where they overlap.
+        '''
+
+        self.checkMyList()
+
+        print(self.myList[0])
 
     def findIndexOf(self, pattern):
         '''
@@ -137,6 +160,9 @@ class Iue():
 
             e.g.: index = iue.findIndexOf("05722")
         '''
+
+        self.checkMyList()
+
         import numpy as np
 
         try:
@@ -148,32 +174,72 @@ class Iue():
 
     def findByDate(self, start, end):
         '''
-            Search dataset for data within a given interval in date.
+            Search dataframe for data within a given interval in date format.
         '''
+
+        self.checkMyList()
+
         s = start if start < end else end
         e = end if start < end else start
         mask = (self.myInfo['DateObs'] >= s) & (self.myInfo['DateObs'] <= e)
         return self.myInfo.loc[mask]
 
+
+class IueBinSys(Iue):
+    '''
+        This class will handle data from binary systems by adding an extra column containing the orbital phase of the observation.
+
+        Usage:
+            binSysName = IueBinSys() # new instance of the class
+            binSysName.readIueData(fileList) # read data list
+            binSysName.setEphemeris(period, T0) # set ephemeris for the system
+            binSysName.myInfo.head() # show the resulting dataframe
+    '''
+
+    def __init__(self):
+        pass
+
+    def setEphemeris(self, period, T0):
+        '''
+            Set the period and zero point for orbital phase calculation.
+        '''
+
+        self.checkMyList()
+
+        import astropy.units as u
+        from astropy.time import Time, TimeDelta
+
+        self.per = TimeDelta(period * u.day)
+        self.T0 = Time(T0, format='jd')
+        # ephemeris
+        # T - T0
+        deltaT = self.myInfo['jdMid'] - self.T0.jd
+        self.myInfo['deltaT'] = deltaT
+        # phase = mod( (T-T0) / per )           V  (T-T0) > 0
+        # phase = mod(mod( (T-T0) / per ) + 1)  V  (T-T0) < 0
+        self.myInfo['phase'] = [ ( (dT/self.per.value)%1 if (dT > self.T0.jd) else ((dT/self.per.value)%1+1)%1 ) for dT in deltaT]
+
     def findByPhase(self, start, end):
         '''
             Search dataset for data within a given interval in phase.
         '''
+
+        self.checkMyList()
+
         s = start if start < end else end
         e = end if start < end else start
         mask = (self.myInfo['phase'] >= s) & (self.myInfo['phase'] <= e)
         return self.myInfo.loc[mask]
 
-class IuePlot():
-    def __init__(self):
-        pass
-
-class IueMerge():
-    def __init__(self):
-        pass
 
 if __name__ == "__main__":
 
-    print("Usage:")
-    print("-> import iue")
-    print("-> iue = Iue()")
+    print("### Usage ###")
+    print("")
+    print("For general IUE data:")
+    print(" -> form iue import Iue")
+    print(" -> obj = Iue()")
+    print("")
+    print("For observation of binary systems:")
+    print(" -> from iue import IueBinSys")
+    print(" -> obj = IueBinSys()")
