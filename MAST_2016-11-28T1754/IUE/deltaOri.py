@@ -9,11 +9,18 @@ from iue import Iue, IueBinSys
 fileList = json.load( open( "./iueData.json" ) )
 
 
+# TWO WAYS OF INSTANTIATE THE Iue CLASS:
 
+# - 1:
 # instantiate the Iue class for general IUE data
 iue = Iue()
-# do the actual reading of the data and append it to the instance
+# and do the actual reading of the data and append it to the instance
 iue.readIueData(fileList['filename'])
+
+# - 2:
+# instantiate the Iue class providing the fileList
+iue2 = Iue(fileList['filename'])
+
 
 ### DATA MANIPULATION
 # query data by start and end dates

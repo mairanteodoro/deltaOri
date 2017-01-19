@@ -3,13 +3,22 @@
 class Iue():
 
     # list with the filename (full path) for all data to be used.
-    # global attribute; will be turned into tuple by .readIueData()
+    # (class attribute; will be changed to tuple by .readIueData())
     myList = ''
 
-    def __init__(self):
-        pass
+    def __init__(self, *arg):
+        # arg == myList
+        # N.B.: the Iue class can be instantiated with or without providing a list of the files to be read and stored
+        try:
+            if (len(arg) == 1):
+                # if arg has been provided then read data immediately
+                self.readIueData(arg[0])
+            else:
+                return
+        except:
+            pass
 
-    def checkMyList(self):
+    def __checkMyList__(self):
         '''
             This method checks for the existence of IUE data.
         '''
@@ -94,7 +103,7 @@ class Iue():
             This method loops over the orders of a given file and returns a dataframe with columns 'order', 'wave', 'flux', and 'filename'.
         '''
 
-        self.checkMyList()
+        self.__checkMyList__()
 
         from astropy.table import Table
         import pandas as pd
@@ -139,20 +148,27 @@ class Iue():
                 allSpec[0].order, allSpec[0].wave, allSpec[0].flux
         '''
 
-        self.checkMyList()
+        self.__checkMyList__()
 
         # return an array where each element is a pandas DataFrame
         # containing 'filename', 'order', 'wave', and 'flux'
         return [ self.getSpec(filename) for filename in self.myList[0] ]
 
-    def mergeOrders(self):
+    def __mergeOrders__(self):
         '''
             Loop over the orders and splice them together where they overlap.
         '''
 
-        self.checkMyList()
+        self.__checkMyList__()
 
-        print(self.myList[0])
+        # loop over the files
+        for item in self.myList[0]:
+            # get the spectral data corresponding to the current file
+            currSpec = self.mySpec[self.findIndexOf(item)]
+            # loop over the orders
+            for order in currSpec.order:
+                # do the splicing here
+                print(order)
 
     def findIndexOf(self, pattern):
         '''
@@ -161,7 +177,7 @@ class Iue():
             e.g.: index = iue.findIndexOf("05722")
         '''
 
-        self.checkMyList()
+        self.__checkMyList__()
 
         import numpy as np
 
@@ -177,7 +193,7 @@ class Iue():
             Search dataframe for data within a given interval in date format.
         '''
 
-        self.checkMyList()
+        self.__checkMyList__()
 
         s = start if start < end else end
         e = end if start < end else start
