@@ -1,0 +1,15 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    // Overrides colors from the currently selected color theme.
+    "workbench.colorCustomizations": {
+        "editor.background": "#1E1E1E",
+        "activityBar.background": "#252526",
+        "sideBar.background": "#0E0E0E",
+        "statusBar.background": "#007ACC",
+        "titleBar.activeBackground": "#3C3C3C",
+        "tab.activeBackground": "#1E1E1E",
+        "tab.inactiveBackground": "#2D2D2D",
+        "editorGroupHeader.tabsBackground": "#2A2A2A"
+    },
+    "workbench.colorTheme": "One Dark Pro"
+}

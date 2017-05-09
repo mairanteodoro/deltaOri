@@ -371,6 +371,18 @@ class Iue(object): # <- providing 'object' to comply with new style class!
         # return a list with data that encompass the provided wavelength
         return res
 
+    def smTVS(self, *args):
+        '''
+        This method uses the smoothed temporal variance (smTVS) spectrum to analize light phase variations (LPV).
+        
+        Reference:
+            (1) "Smoothed Temporal Variance Spectrum: weak line profile variations and NRP diagnostics" by Kholtygin, A. F., Sudnik, N. P. (2016)
+            (2) "Fast Line-Profile Variability in the Spectra of O Stars" by Kholtygin, A. F., Monin, D. N., Surkov A. E., Fabrika, S. N. (2003)
+
+        '''
+        # loop over list of spectra
+            # loop over wavelength 
+
 
 class IueBinSys(Iue):
     '''
