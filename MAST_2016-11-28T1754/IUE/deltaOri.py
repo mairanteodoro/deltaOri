@@ -57,63 +57,151 @@ plt.close('all')
 
 
 
-###
-# delta Ori
-###
-# instantiate the IueBinSys class for binary systems
-delOri = IueBinSys()
-delOri.read_iue_data(fileList['filename'])
+def setup():
 
-# ephemeris for delta Ori from Corcoran et al. 2015
-per, T0 = 5.732436, 2456295.674
-# set the ephemeris for delta Ori
-delOri.set_ephemeris(per, T0)
+    ###
+    # delta Ori
+    ###
+    import json as json
+    from iue import Iue, IueBinSys
+
+    # parse filenames into a list format
+    fileList = json.load( open( "./iueData.json" ) )
+
+    # instantiate the IueBinSys class for binary systems
+    delOri = IueBinSys()
+    delOri.read_iue_data(fileList['filename'])
+
+    # setting the ephemeris for the binary system
+    #
+    # ephemeris for delta Ori from Corcoran et al. 2015
+    per, T0 = 5.732436, 2456295.674
+    # set the ephemeris for delta Ori
+    delOri.set_ephemeris(per, T0)
+
+    return delOri
 
 
-# query data by start and end dates
-selected1 = delOri.find_by_date('1981-01', '1983-12')
-# or
-selected2 = delOri.find_by_date('1983-12', '1981-01')
+def do_it(wavelength: float=0, continuum: list=[], phase1: float =0, phase2: float =1):
 
-# query data by start and end phase
-selected3 = delOri.find_by_phase(0.1, 0.2)
-# or
-selected4 = delOri.find_by_phase(0.2, 0.1)
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import astropy.units as u
 
-# query by wavelength
+    wave_unit = u.Angstrom
+    flux_unit = u.erg / u.s / (u.cm * u.cm) / u.Angstrom
+
+    ### query data by phase and wavelength
+    # this will store **two adjacent orders** from all the data within the provided phase interval
+    selected_data = delOri.find_by_phase(phase1, phase2, wavelength=wavelength)
+
+    # import ipdb; ipdb.set_trace()
+    spec_list = []
+    for i,item in enumerate(selected_data):
+        # get the number of orders found
+        if item.shape[0] == 1:
+            # only one order returned
+            spec_list.append({'wave': item.wave.values[0] * wave_unit,
+                              'flux': item.abs_cal.values[0] * flux_unit,
+                              'noise': (item.noise.values[0] * item.abs_cal.values[0] /
+                                        item.net_flux.values[0]) * flux_unit})
+        else:
+            # select the orders to merge using selection by position
+            # (.iloc[] can be used too)
+            w1, w2 = zip(item.wave)
+            f1, f2 = zip(item.abs_cal)
+            q1, q2 = zip(item.quality)
+            n1, n2 = zip(item.noise)  # this is used for the SNR estimate
+            net1, net2 = zip(item.net_flux)  # this is used for the SNR estimate
+            # merge the two orders (the returned noise is in cgs units)
+            spec_list.append(delOri._splice(w1[0], w2[0],
+                                      f1[0], f2[0],
+                                      q1[0], q2[0],
+                                      n1[0], n2[0],
+                                      net1[0], net2[0]
+                                      ))
+    disp = 0.03 # Angstrom
+    # cont_region = continuum # continuum region for normalization and SNR estimate
+    S_parameter = [0, 1, 5, 10] # S parameter
+
+    # smoothed TVS
+    smTVS = [delOri.tvs(
+            spec_list=spec_list,
+            dispersion=disp,
+            continuum=continuum,
+            S_par=S
+            ) for S in S_parameter]
+
+    #
+    # *** DONT FORGET TO SET plt.ion() ***
+    plt.close('all'); plt.ion()
+    #
+    fig, ax = plt.subplots(2, 1, sharex=True)
+    # plot spectra
+    [ax[0].plot(spec_list[i]['wave'], spec_list[i]['flux'], label=r'epoch {}'.format(i))
+     for i in range(len(spec_list))]
+    ax[0].set_ylabel(r'flux [erg\,s$^{-1}$\,cm$^{-2}$\,\AA$^{-1}$]')
+    ax[0].legend(loc='best')
+
+    # plot tvs for different values of S
+    [ax[1].plot(smTVS[i]['wave'], np.sqrt(smTVS[i]['tvs']),
+                label=r'$\sigma$ = {0:0.2f}~\AA'.format(S_parameter[i] * disp))
+     for i in range(len(S_parameter))]
+    ax[1].set_xlabel(r'Wavelength [\AA]')
+    ax[1].legend(loc='best')
+
+    import ipdb; ipdb.set_trace()
+
+
+
+### query data by date interval (the start/end date order does not matter)
+sel_1 = delOri.find_by_date('1981-01', '1983-12')
+
+### query data by phase interval (the start/end phase order does not matter)
+sel_2 = delOri.find_by_phase(0.45, 0.55)
+
+### query by wavelength only
 sel_NV = delOri.find_by_wave(1240)
 sel_CIV = delOri.find_by_wave(1550)
 sel_SiIV = delOri.find_by_wave(1400)
-
-# select orders to merge
-w1 = sel_NV[0].wave.iloc[0]
-w2 = sel_NV[0].wave.iloc[1]
-f1 = sel_NV[0].abs_cal.iloc[0]
-f2 = sel_NV[0].abs_cal.iloc[1]
-q1 = sel_NV[0].quality.iloc[0]
-q2 = sel_NV[0].quality.iloc[1]
-# merge the two orders
-merged = delOri._splice(w1, w2, f1, f2, q1, q2)
+# once we have selected data by wavelength, we can search it by phase using a two-step procedure
+phase_interval = [0.45, 0.55]
+# firstly, select all data that complies with the wavelength constraint
+selected_data = [df.query('phase >= {0} and phase <= {1}'.format(phase_interval[0], phase_interval[1]))
+for df in sel_NV]
+sel_CIV_phase = [df.query('phase >= {0} and phase <= {1}'.format(phase_interval[0], phase_interval[1]))
+for df in sel_CIV]
+sel_SiIV_phase = [df.query('phase >= {0} and phase <= {1}'.format(phase_interval[0], phase_interval[1]))
+for df in sel_SiIV]
+# secondly, drop all dataframe that returned empty from the previous line
+selected_data = [item for item in selected_data if item.shape[0]]
+sel_CIV_phase = [item for item in sel_CIV_phase if item.shape[0]]
+sel_SiIV_phase = [item for item in sel_SiIV_phase if item.shape[0]]
+# to prove that both approaches (query by phase and then wavelength or by wavelength and then phase)
+# return the same results, we can compare them:
+# (will return [True, True, True, True])
+[selected_data[i].equals(selected3_NV[i]) for i in range(len(selected_data))]
 
 # plot the distribution of phase coverage
 # plt.ion()
 # delOri.myInfo.hist(column='phase')
 
-# plot all the spectra and orders
-fig, ax = plt.subplots()
-
-data = sel_SiIV
-colors = ['red', 'green']
-
-[[ax.plot(data[j].wave.iloc[i], data[j].abs_cal.iloc[i], marker='', color=colors[i], lw=0.1) for i in range(len(data[j].wave))] for j in range(len(data))]
-
-ax.set_xlabel(u'Wavelength [\AA]')
-ax.set_ylabel(u'abs\_cal [erg s$^{-1}$ cm$^{-2}$ \AA$^{-1}$]')
-
-fig.savefig('./RESULTS/spec_SiIV.svg')
-
-plt.clf()
-plt.close('all')
+# # plot all the spectra and orders
+# fig, ax = plt.subplots()
+#
+# data = sel_SiIV
+# colors = ['red', 'green']
+#
+# [[ax.plot(data[j].wave.iloc[i], data[j].abs_cal.iloc[i], marker='', color=colors[i], lw=0.1)
+# for i in range(len(data[j].wave))] for j in range(len(data))]
+#
+# ax.set_xlabel(u'Wavelength [\AA]')
+# ax.set_ylabel(u'abs\_cal [erg s$^{-1}$ cm$^{-2}$ \AA$^{-1}$]')
+#
+# fig.savefig('./RESULTS/spec_SiIV.svg')
+#
+# plt.clf()
+# plt.close('all')
 
 
 
@@ -153,8 +241,8 @@ plt.close('all')
 
 import matplotlib.pyplot as plt
 from scipy import interpolate
-import statistics as stats
-import sys
+# import statistics as stats
+# import sys
 # this backend allows for multiple pages in a PDF file
 from matplotlib.backends.backend_pdf import PdfPages
 
