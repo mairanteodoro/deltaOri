@@ -7,7 +7,7 @@ from iue import Iue, IueBinSys
 import numpy as np
 
 # parse filenames into a list format
-fileList = json.load( open( "./iueData.json" ) )
+fileList = json.load(open("./iueData.json"))
 
 
 # TWO WAYS TO INSTANTIATE THE Iue CLASS:
@@ -43,18 +43,17 @@ info0 = iue.my_info.loc[iue.find_index_of('02992')]
 sel1_by_wave = iue.find_by_wave(1830)
 
 
-
 # PLOTTING
 # plot all the orders
 fig, ax = plt.subplots()
 
-[ax.plot(spec0.wave.iloc[i], spec0.abs_cal.iloc[i], marker='') for i in range(len(spec0.wave))]
+[ax.plot(spec0.wave.iloc[i], spec0.abs_cal.iloc[i], marker='')
+ for i in range(len(spec0.wave))]
 
 fig.savefig('./RESULTS/spec.pdf')
 
 plt.clf()
 plt.close('all')
-
 
 
 def setup():
@@ -66,7 +65,7 @@ def setup():
     from iue import Iue, IueBinSys
 
     # parse filenames into a list format
-    fileList = json.load( open( "./iueData.json" ) )
+    fileList = json.load(open("./iueData.json"))
 
     # instantiate the IueBinSys class for binary systems
     delOri = IueBinSys()
@@ -82,7 +81,11 @@ def setup():
     return delOri
 
 
-def do_it(wavelength: float=0, continuum: list=[], phase1: float =0, phase2: float =1):
+def do_it(wavelength: float=0,
+          continuum: list=[],
+          phase1: float =0,
+          phase2: float =1
+          ):
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -91,19 +94,21 @@ def do_it(wavelength: float=0, continuum: list=[], phase1: float =0, phase2: flo
     wave_unit = u.Angstrom
     flux_unit = u.erg / u.s / (u.cm * u.cm) / u.Angstrom
 
-    ### query data by phase and wavelength
-    # this will store **two adjacent orders** from all the data within the provided phase interval
+    # query data by phase and wavelength
+    # this will store **two adjacent orders** from all the
+    # data within the provided phase interval
     selected_data = delOri.find_by_phase(phase1, phase2, wavelength=wavelength)
 
     # import ipdb; ipdb.set_trace()
     spec_list = []
-    for i,item in enumerate(selected_data):
+    for i, item in enumerate(selected_data):
         # get the number of orders found
         if item.shape[0] == 1:
             # only one order returned
             spec_list.append({'wave': item.wave.values[0] * wave_unit,
                               'flux': item.abs_cal.values[0] * flux_unit,
-                              'noise': (item.noise.values[0] * item.abs_cal.values[0] /
+                              'noise': (item.noise.values[0] *
+                                        item.abs_cal.values[0] /
                                         item.net_flux.values[0]) * flux_unit})
         else:
             # select the orders to merge using selection by position
@@ -112,17 +117,18 @@ def do_it(wavelength: float=0, continuum: list=[], phase1: float =0, phase2: flo
             f1, f2 = zip(item.abs_cal)
             q1, q2 = zip(item.quality)
             n1, n2 = zip(item.noise)  # this is used for the SNR estimate
-            net1, net2 = zip(item.net_flux)  # this is used for the SNR estimate
+            net1, net2 = zip(item.net_flux)  # this is used for SNR estimate
             # merge the two orders (the returned noise is in cgs units)
             spec_list.append(delOri._splice(w1[0], w2[0],
-                                      f1[0], f2[0],
-                                      q1[0], q2[0],
-                                      n1[0], n2[0],
-                                      net1[0], net2[0]
-                                      ))
-    disp = 0.03 # Angstrom
-    # cont_region = continuum # continuum region for normalization and SNR estimate
-    S_parameter = [0, 1, 5, 10] # S parameter
+                                            f1[0], f2[0],
+                                            q1[0], q2[0],
+                                            n1[0], n2[0],
+                                            net1[0], net2[0]
+                                            ))
+    disp = 0.03  # Angstrom
+    # cont_region = continuum # continuum region for normalization
+    # and SNR estimate
+    S_parameter = [0, 1, 5, 10]  # S parameter
 
     # smoothed TVS
     smTVS = [delOri.tvs(
@@ -134,23 +140,32 @@ def do_it(wavelength: float=0, continuum: list=[], phase1: float =0, phase2: flo
 
     #
     # *** DONT FORGET TO SET plt.ion() ***
-    plt.close('all'); plt.ion()
+    plt.close('all')
+    plt.ion()
     #
     fig, ax = plt.subplots(2, 1, sharex=True)
     # plot spectra
-    [ax[0].plot(spec_list[i]['wave'], spec_list[i]['flux'], label=r'epoch {}'.format(i))
+    [ax[0].plot(spec_list[i]['wave'], spec_list[i]['flux'],
+                label=r'epoch {}'.format(i))
      for i in range(len(spec_list))]
     ax[0].set_ylabel(r'flux [erg\,s$^{-1}$\,cm$^{-2}$\,\AA$^{-1}$]')
     ax[0].legend(loc='best')
 
     # plot tvs for different values of S
-    [ax[1].plot(smTVS[i]['wave'], np.sqrt(smTVS[i]['tvs']),
-                label=r'$\sigma$ = {0:0.2f}~\AA'.format(S_parameter[i] * disp))
-     for i in range(len(S_parameter))]
+    ax[1].plot(smTVS[0]['wave'], (smTVS[0]['tvs']),
+               label=r'$\sigma$ = {0:0.2f}~\AA'.format(S_parameter[0] * disp))
     ax[1].set_xlabel(r'Wavelength [\AA]')
+    ax[1].set_ylabel(r'(TVS)$^{1/2}$')
     ax[1].legend(loc='best')
 
+    # ax[1].axhline(y=1.4176, ls='dashed')
+
     import ipdb; ipdb.set_trace()
+
+
+delOri = setup()
+do_it(wavelength=1400, phase1=0., phase2=0.2, continuum=[1385, 1387])
+do_it(wavelength=1550, phase1=0., phase2=0.2, continuum=[1542, 1544])
 
 
 

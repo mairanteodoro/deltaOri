@@ -3,13 +3,13 @@
 
 class Iue(object):  # <- providing 'object' to comply with new style class!
 
-
     # flag for the existence of list; class attribute
     _my_list_ok = False
 
     def __init__(self, *arg):
         # arg == my_list
-        # N.B.: the Iue class can be instantiated with or without providing a list of the files to be read in and stored
+        # N.B.: the Iue class can be instantiated with or without providing a
+        # list of the files to be read in and stored
         import pandas as pd
 
         self.my_list = ()
@@ -28,7 +28,7 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
 
     def _check_my_list(self):
         """
-            This method checks for the existence of IUE data.
+            Checks for the existence of IUE data.
         """
         import sys
 
@@ -182,7 +182,7 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
                 allSpec[0].order, allSpec[0].wave, allSpec[0].flux
         """
 
-        if self._my_list_ok == False:
+        if not self._my_list_ok:
             self._check_my_list()
 
         # return an array where each element is a pandas DataFrame
@@ -193,7 +193,7 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
     def _splice(w1, w2, f1, f2, q1, q2, n1=[], n2=[], net1=[], net2=[]):
         """
             Splice two spectra together taking into account data quality flag.
-            
+
             If noise is provided (via n1, n2, net1, and net2), the returned value is flux-calibrated
             (i.e.: returned_noise(cgs) = noise(raw) * abs_cal(cgs) / net_flux(raw)).
             This could be useful for Temporal Variance analysis (default is NO NOISE).
@@ -222,7 +222,9 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         import astropy.units as u
 
         # units of the returned values
+        # noinspection PyUnresolvedReferences
         wave_unit = u.Angstrom
+        # noinspection PyUnresolvedReferences,PyUnresolvedReferences,PyUnresolvedReferences,PyUnresolvedReferences
         flux_unit = u.erg / u.s / (u.cm * u.cm) / u.Angstrom
 
         # considering only good quality flags
@@ -308,7 +310,7 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
                   iue.get_spec(iue.my_info.filename[index]) # -> get spectrum
         """
 
-        if self._my_list_ok == False:
+        if not self._my_list_ok:
             self._check_my_list()
         try:
             return self.my_info[self.my_info.filename.str.contains(pattern)].index[0]
@@ -328,7 +330,7 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         import pandas as pd
         import numpy as np
 
-        if self._my_list_ok == False:
+        if not self._my_list_ok:
             self._check_my_list()
 
         s = start if start < end else end
@@ -409,6 +411,8 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         mask = [(self.my_spec[i].waveMin < wave) & (self.my_spec[i].waveMax > wave) for i in range(len(self.my_spec))]
 
         # create a list with one valid data frame per element
+        # (note that j is not used as index; it is used to create a pd.Series of repeated values)
+        # noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
         temp = [pd.concat([self.my_spec[i][mask[i]],
                            pd.Series([self.my_info.DateObs[i] for j in range(len(self.my_spec[i][mask[i]]))],
                                      name='DateObs', index=self.my_spec[i][mask[i]].index),
@@ -425,6 +429,7 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         # test for the existence of the key 'phase'
         if 'phase' in self.my_info:
             # if present, concatenate it to the dataframe
+            # noinspection PyUnusedLocal
             temp2 = [pd.concat([temp[i],
                                 pd.Series([self.my_info.phase[i] for j in range(len(self.my_spec[i][mask[i]]))],
                                           name='phase', index=self.my_spec[i][mask[i]].index)], axis=1) for i in
@@ -442,15 +447,17 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         # return a list with data that encompass the provided wavelength
         return res
 
-    def tvs(self, spec_list: list, dispersion=None, continuum=None, S_par=0):
+    def tvs(spec_list: list, dispersion=None, continuum=None, S_par=0):
         """
-        This method uses the smoothed temporal variance (tvs) spectrum to analize light phase variations (LPV).
-        
+        Uses the smoothed temporal variance (tvs) spectrum to analize light
+        phase variations (LPV).
+
         Reference:
-            (1) "Smoothed Temporal Variance Spectrum: weak line profile variations and NRP diagnostics" by Kholtygin,
-            A. F., Sudnik, N. P. (2016)
-            (2) "Fast Line-Profile Variability in the Spectra of O Stars" by Kholtygin, A. F., Monin, D. N., Surkov
-            A. E., Fabrika, S. N. (2003)
+            (1) "Smoothed Temporal Variance Spectrum: weak line profile
+            variations and NRP diagnostics" by Kholtygin, A. F., Sudnik,
+            N. P. (2016);
+            (2) "Fast Line-Profile Variability in the Spectra of O Stars" by
+            Kholtygin, A. F., Monin, D. N., Surkov A. E., Fabrika, S. N. (2003)
 
         """
         # (1) loop over wavelength
@@ -462,46 +469,73 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         N = len(spec_list)
         const = 1 / (N - 1)
 
-        # # normalize by the provided "continuum" region
-        # y_cnorm = [item.get('flux') / item.get('flux')[(item.get('wave').value >= continuum[0]) & (
-        #     item.get('wave').value <= continuum[1])].mean() for item in spec_list]
-        # # replace observed flux by continuum-normalized flux
-        # for i,item in enumerate(spec_list):
-        #     item['flux'] = y_cnorm[i]
+        smoothed_y = [ndimage.filters.gaussian_filter(item.get('flux'), S_par)
+                      for item in spec_list]
 
-        """ N.B.: the following is similar for both the TVS (Fullerton et al. 1996) and tvs
-        (Kholtygin and Sudnik 2016); the only difference being whether the input spec_list contains smoothed
-        data or not, which can be defined by the S_par keyword (S_par=0 corresponds to non-smoothed data).
+        for i, item in enumerate(spec_list):
+            item['flux'] = smoothed_y[i]
+
+        # # normalize by the provided "continuum" region
+        # flux_cnorm = [item.get('flux') /
+        # item.get('flux')[(item.get('wave').value >= continuum[0]) & (
+        #     item.get('wave').value <= continuum[1])].mean() for item in
+        # spec_list]
+        # noise_cnorm = [item.get('noise') /
+        # item.get('flux')[(item.get('wave').value >= continuum[0]) & (
+        #     item.get('wave').value <= continuum[1])].mean() for item in
+        # spec_list]
+        # # replace observed flux by continuum-normalized flux
+        # for i, item in enumerate(spec_list):
+        #     item['flux'] = flux_cnorm[i]
+        #     item['noise'] = noise_cnorm[i]
+
+        """ N.B.: the following is similar for both the TVS (Fullerton et al.
+        1996) and tvs (Kholtygin and Sudnik 2016); the only difference being
+        whether the input spec_list contains smoothed data or not, which can be
+        defined by the S_par keyword (S_par=0 corresponds to non-smoothed data)
         """
-        # sigma_ic =: noise in the continuum region = (S/N)^-1 = N/S =: stdev/mean
-        sigma_ic = [item.get('noise')[
-                        (item.get('wave').value >= continuum[0]) & (item.get('wave').value <= continuum[1])].mean() /
-                    item.get('flux')[
-                        (item.get('wave').value >= continuum[0]) & (item.get('wave').value <= continuum[1])].mean() for
-                    item in spec_list]
+        # sigma_ic =: noise in the continuum region = (S/N)^-1 = N/S =:
+        #  stdev/mean
+        sigma_ic = [
+            item.get('noise')[
+                (item.get('wave').value >= continuum[0]) &
+                (item.get('wave').value <= continuum[1])].mean() /
+            item.get('flux')[
+                (item.get('wave').value >= continuum[0]) &
+                (item.get('wave').value <= continuum[1])].mean()
+            for item in spec_list]
         # mean noise for the entire dataset (sigma_zero)
-        sigma_0 = ((1. / N) * np.sum(np.power([i.value for i in sigma_ic], -2))) ** (-0.5)
+        sigma_0 = ((1. / N) * np.sum([np.power(item.value, -2)
+                                      for item in sigma_ic])) ** (-0.5)
         # sigma_i(lambda) =: (S/N)^-1 per pixel
         sigma_i = [item.get('noise') / item.get('flux') for item in spec_list]
-        # weight of each spectrum based on the continuum SNR (Fullerton et al. 1996)
+        # weight of each spectrum based on the continuum SNR (Fullerton et al.
+        # 1996)
         # w_i = (sigma_0 / sigma_ic)**2
         print('sigma_0: {0}; sigma_ic: {1}'.format(sigma_0, sigma_ic))
 
         """
             From Kholtygin and Sudnik (2016, pg 1609):
-            
-            "Note that the variation of the parameter S and the ratio S/N extremely weakly influence the value of
-            q(lambda, S). This result holds for different values of the line profile parameters and the ratio S/N.
-            Therefore for all S we can put q(lambda, S) approximately equals to q(lambda, 0). Thus for all values
-            of S it is possible to use the simple formula (23) instead of making the numerical integration in
+
+            "Note that the variation of the parameter S and the ratio S/N
+            extremely weakly influence the value of
+            q(lambda, S). This result holds for different values of the line
+            profile parameters and the ratio S/N.
+            Therefore for all S we can put q(lambda, S) approximately equals to
+            q(lambda, 0). Thus for all values
+            of S it is possible to use the simple formula (23) instead of
+            making the numerical integration in
             equation (25)."
         """
         q_i = (sigma_0 / sigma_i) ** 2
         # print('q_i[0]: {}'.format(q_i[0]))
         # residual matrix
-        d_i = [item.get('flux') - item.get('flux').mean() for item in spec_list]
+        d_i = [item.get('flux') - item.get('flux').mean()
+               for item in spec_list]
         # xi_i^2
         xi_i2 = [q_i[i] * np.power(d_i[i], 2) for i in range(len(q_i))]
+
+        # TODO: perform the clipping/interpolation BEFORE any math op
 
         # clip the spectra to the same wavelength range
         minima = [np.min(item.get('wave').value) for item in spec_list]
@@ -509,29 +543,38 @@ class Iue(object):  # <- providing 'object' to comply with new style class!
         x_limits = (np.max(minima), np.min(maxima))
         print('minima and maxima: {0} and {1}'.format(minima, maxima))
         print('x_limits: {0} -- {1}'.format(x_limits[0], x_limits[1]))
-        x_clipped = [item.get('wave')[(item.get('wave').value >= x_limits[0]) & (item.get('wave').value <= x_limits[1])]
-                     for item in spec_list]
-        y_clipped = [product[(spectrum.get('wave').value >= x_limits[0]) & (spectrum.get('wave').value <= x_limits[1])]
-                     for product, spectrum in zip(xi_i2, spec_list)]
+        x_clipped = [
+            item.get('wave')[(item.get('wave').value >= x_limits[0]) &
+                             (item.get('wave').value <= x_limits[1])]
+            for item in spec_list]
+        y_clipped = [
+            product[(spectrum.get('wave').value >= x_limits[0]) &
+                    (spectrum.get('wave').value <= x_limits[1])]
+            for product, spectrum in zip(xi_i2, spec_list)]
         # new x grid where the interpolation will take place
         # x_new_min, x_new_max = np.max(minima), np.min(maxima)
         # find function shape for each spectrum
-        func_interp = [interpolate.splrep(x_clipped[i].value, y_clipped[i].value) for i in range(len(x_clipped))]
+        func_interp = [
+            interpolate.splrep(x_clipped[i].value, y_clipped[i].value)
+            for i in range(len(x_clipped))]
         # new wavelength grid with provided dispersion
         x_new = np.arange(x_limits[0], x_limits[1], dispersion)
         # apply the interpolation function onto the new wavelength grid
-        y_new = [interpolate.splev(x_new, func_interp[i]) for i in range(len(func_interp))]
-        import ipdb; ipdb.set_trace()
+        y_new = [interpolate.splev(x_new, func_interp[i])
+                 for i in range(len(func_interp))]
+        # import ipdb; ipdb.set_trace()
         # gaussian smooth (maybe this should be done at the beginning?)
-        tvs = ndimage.filters.gaussian_filter(const * np.sum(y_new, axis=0), S_par)
+        # tvs = ndimage.filters.gaussian_filter(const *
+        #       np.sum(np.power(y_new, 2), axis=0), S_par)
+        tvs = const * np.sum(np.power(y_new, 2), axis=0)
 
         return {'wave': x_new, 'tvs': tvs}
 
 
 class IueBinSys(Iue):
     """
-        This class will handle data from binary systems by adding an extra column containing the orbital phase
-        of the observation.
+        This class will handle data from binary systems by adding an extra
+        column containing the orbital phase of the observation.
 
         Usage:
             binSysName = IueBinSys() # new instance of the class
@@ -540,10 +583,11 @@ class IueBinSys(Iue):
             binSysName.my_info.head() # show the resulting dataframe
     """
 
-    def __init__(self):
+    def __init__(self, *arg):
+        # calling parent's __init__()
+        super().__init__(*arg)
         self.per = 0
         self.T0 = 0
-        pass
 
     def set_ephemeris(self, period, T0):
         """
@@ -565,13 +609,15 @@ class IueBinSys(Iue):
         # phase = mod( (T-T0) / per )           V  (T-T0) > 0
         # phase = mod(mod( (T-T0) / per ) + 1)  V  (T-T0) < 0
         self.my_info['phase'] = [
-            ((dT / self.per.value) % 1 if (dT > self.T0.jd) else ((dT / self.per.value) % 1 + 1) % 1) for dT in deltaT]
+            ((dT / self.per.value) % 1 if (dT > self.T0.jd) else
+             ((dT / self.per.value) % 1 + 1) % 1) for dT in deltaT]
 
     def find_by_phase(self, start, end, wavelength=False):
         """
             Search dataset for data within a given interval in phase.
-            Optionally, if a wavelength is provided, filter the results by wavelength, as well
-            (i.e. returns data filtered by phase AND wavelength).
+            Optionally, if a wavelength is provided, filter the results by
+            wavelength, as well (i.e. returns data filtered by phase AND
+            wavelength).
 
             Returns a list with a pandas dataframe for each element.
         """
@@ -585,15 +631,18 @@ class IueBinSys(Iue):
         e = end if start < end else start
 
         # create a True/False mask
-        mask = [(self.my_info.phase[i] >= s) & (self.my_info.phase[i] <= e) for i in range(len(self.my_info.DateObs))]
+        mask = [(self.my_info.phase[i] >= s) & (self.my_info.phase[i] <= e)
+                for i in range(len(self.my_info.DateObs))]
 
         # create list of indexes where mask == True
         mask_index = np.where(np.asarray(mask))[0].tolist()
 
         # create series to be concatenated
         # CAREFUL HERE; NORDERS IS VARIABLE!!
-        norders = [self.my_spec[mask_index[i]].shape[0] for i in range(len(mask_index))]
-        nelements = len([item for item in self.my_info.jdObs.iloc[mask].values])
+        norders = [self.my_spec[mask_index[i]].shape[0]
+                   for i in range(len(mask_index))]
+        nelements = len([item
+                         for item in self.my_info.jdObs.iloc[mask].values])
         # create a list of pandas Series for each element
         s1 = [pd.Series(
             # creating norders copies of DateObs value
@@ -613,15 +662,18 @@ class IueBinSys(Iue):
             name='exptime') for i in range(nelements)]
 
         # create a list of one valid data frame per element
-        temp = [pd.concat([self.my_spec[mask_index[i]], s1[i], s2[i], s3[i], s4[i], s5[i]], axis=1)
+        temp = [pd.concat([self.my_spec[mask_index[i]],
+                           s1[i], s2[i], s3[i], s4[i], s5[i]], axis=1)
                 for i in range(len(mask_index))]
 
         # test for the existence of the key 'phase'
         if 'phase' in self.my_info:
             phase = [pd.Series(
-                [self.my_info.phase.iloc[mask].values[i]] * norders[i], name='phase') for i in range(nelements)]
+                [self.my_info.phase.iloc[mask].values[i]] * norders[i],
+                name='phase') for i in range(nelements)]
             # if present, concatenate it to the dataframe
-            temp2 = [pd.concat([temp[i], phase[i]], axis=1) for i in range(len(temp))]
+            temp2 = [pd.concat([temp[i], phase[i]], axis=1)
+                     for i in range(len(temp))]
         else:
             # ignore it
             temp2 = temp
@@ -636,7 +688,8 @@ class IueBinSys(Iue):
         # return a list with data obtained between the provided phases
         if wavelength and wavelength > 0:
             # dataset filtered by phase and wavelength
-            new_res = [df.query('waveMin <= {0} and waveMax >= {0}'.format(wavelength)) for df in res]
+            new_res = [df.query('waveMin <= {0} and waveMax >= \
+                                {0}'.format(wavelength)) for df in res]
             # drop empty dataframes
             return [item for item in new_res if item.shape[0]]
         else:

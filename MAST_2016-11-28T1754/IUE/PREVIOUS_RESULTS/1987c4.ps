@@ -1,0 +1,4055 @@
+%!PS-Adobe-0.0
+%%Title: Graphics
+%%Creator: Huib Henrichs for Bill Martin
+%%CreationDate: 2014-04-04 07:12:59
+%%BoundingBox: 25 240 535 815
+%%EndComments
+%%BeginProlog
+/vmsave save def /debug
+0 def /db0 {debug 0 ne} bind def
+/#copies 1     def
+gsave  % for fileinfo on top of page
+/readpar { ((Reading parameters) ) pr
+      /title {($delta$ Ori  HD  36486    C IV)} bind def
+      /tlab (Wavelength (\265)) def
+      /xlab (Velocity (km s^-1^)  (stellar rest frame)) def
+      /lefthead (IUE 1987) def
+      /axis 1 def
+      /vrad   16.0 def
+      /w0 1548.188 def /w0b 1550.772 def
+      /wtic 5 def    /iwt 5 def
+      /x1  -4000 def /x2  4000 def
+      /xtic 1000 def /ixt 5 def
+      /vertdash 2 def
+      /righthead {nmax ( spectra) concnumstring} bind def
+      /ylab [ (Normalized Flux (10^-^^07^ erg cm^-2^s^-1^µ^-1^))] def
+      /glab (Binary Phase (5.732436 d)) def
+      /y1  [0 0] def /y2 [2  1.9] def
+      /ytic [0.5 1] def /iyt [5 4] def
+      /gi 1 def
+      /g1 0 def /g2 0.9999 def
+      /lcut {0.2} def
+      /hcut {1.3} def
+      /gtic 0.1 def /igt 5 def
+      /g0 1 def
+      /drawmode [ 0] def
+      /zerodash [1] def
+      /onedash [0 0] def
+      /font {/Times-Roman} bind def
+      /fscale {4 mm} bind def
+      /ltic {2.5 mm} bind def
+      /lw 0.24 def % .24 p = 2 dots width; must be even
+      /pageheader 0 def
+      /X {150 mm} def
+      /X0 {107 mm X 2 div sub} def % center on A4 page
+      /mmpergunit {100} def
+      /Y [70 mm 70 mm] def
+      /Y0 {250 mm 80 mm sub} def
+%     90 rotate X0 Y0 590 sub translate
+      X0 Y0 translate
+      /drawlabels {standardlabels} def
+%--- file: iprolog.psx (with color), labeloffset added 31 July 2013
+% set defaults for parameters if not given
+mark
+/title CD {/title ( ) def} if
+/xlab CD {/xlab ( ) def} if
+/ylab CD {/ylab [( )] def} if
+/tlab CD {/tlab ( ) def} if
+/lefthead CD {/lefthead ( ) def} if
+/righthead CD {/righthead ( ) def} if
+/xunits CD {/xunits 1 def} if
+/axis CD {/axis 0 def} if
+/interaxis CD {/interaxis 0 def} if % 0 = same as bottom scale
+/vrad CD {/vrad 0 def} if
+/xaxshift CD {/xaxshift 0 def} if
+/yunits CD {/yunits [1] def} if
+/yexpand CD {/yexpand [0] def} if
+/yexpandlin CD {/yexpandlin [0] def} if
+/zerodash CD {/zerodash [0] def} if
+/onedash CD {/onedash [0] def} if
+/vertdash CD {/vertdash 0 def} if
+/drawmode CD {/drawmode [0] def} if
+/colormode CD {/colormode [0 0 0] def} if
+/special CD {/special 0 def} if
+/drawsize CD {/drawsize 1.6 mm def} if
+/barsize CD {/barsize 2 mm def} if
+/sfontsize CD {/sfontsize .7 def} if
+/font CD {/font {/Times-Roman} def} if
+/fscale CD {/fscale 3 mm def} if
+/ltic CD {/ltic 2 mm def} if
+/dasharray CD {/dasharray [ 1 mm ] def } if
+/dashoffset CD {/dashoffset 0 def} if
+/dashcurve CD {/dashcurve 0 def} if
+/lw CD {/lw 0 def} if
+/labeloffset CD {/labeloffset 1.8 def} if
+/pageheader CD {/pageheader 1 def} if
+                              % gi 0 only line graphics: default
+/gi CD {/gi 0 def} if         % gi 1 grayscales and line graphics
+                              % gi 2 only grayscales, no line graphics
+gi 2 eq {/itrue false def /nbox 0 def /Y 0 def} {/itrue true def} ifelse
+gmode {    % defaults for grayscales
+      /gunits CD {/gunits 1 def} if
+      /inverse CD {/inverse 0 def} if
+      /glab CD {/glab ( ) def} if
+      /Xg CD {/Xg 10 mm def} if
+      /G CD {/mmpergunit CD {/G 50 mm def}
+             {/G {g2a g1a sub mmpergunit mul mm} def} ifelse} if
+      /G0 {Y0 G sub} bind def  % top justified
+      /timemarks CD {/timemarks 1 def} if
+      /dummyfile CD{/dummyfile (blank.dat) def} if
+      /rearr CD {rearr [ ] def} if  % enables drawing in gbox
+} if
+/standardlabels { ((drawing labels)) pr
+/tlabpos CD {/tlabpos {Ytop axis 0 ne xaxshift 0 ne axis 0 eq and or
+      axis 3 ne and {fscale add} if
+      1.4 gi 2 eq {0.8 add} if ltm add} bind def}if
+      X 2 div -1.5 ltm fscale labeloffset mul sub
+      gmode {G sub ltic sub} if M xlab csshow           % x label
+      j0 nbox {xoffy j get lefty j get add ltic labeloffset mul sub Yl j get Yi j % y label(s)
+      get 2 div add M gsave 90 rotate ylabi j get csshow grestore j+} repeat
+      gmode {xoffg leftg add ltic labeloffset mul sub G -2 div M gsave 90 rotate
+               glab csshow grestore} if                           % graylabel
+      X 2 div tlabpos M tlab csshow                               % top label
+      X 2 div tlabpos fscale add .4 ltm add M title csshow        % title
+      0 tlabpos M lefthead sshow                                  % headers
+      X tlabpos M righthead rsshow
+      i0 nbox {
+      zerodashi i get 0 ne { % dashed line at 0 level
+      y1i i get 0 lt { [ltic 2 div ] 0 setdash
+      0 y1i i get neg y2i i get y1i i get sub div Yi i get mul Yl i get add M
+      lw LW X 0 RL stroke
+      } if i+ } if
+      } repeat
+      i0 nbox {   % dashed line at 1 level
+      onedashi i get 0 ne{
+      y1i i get 1 lt { [ ltic ltic 2 div ] 0 setdash
+      0 1 y1i i get sub y2i i get y1i i get sub div Yi i get mul Yl i get add M
+      lw LW X 0 RL stroke} if
+      } if
+      i+} repeat
+      vertdash 1 ge { % vertical dashed line at w0
+      x1 0 lt { [ ltic 2 div ] 0 setdash
+      x1 neg x2 x1 sub div X mul 0 M
+      lw LW 0 Ytop RL stroke} if } if
+      vertdash 2 eq { % vertical dashed line at w0b
+      x1 0 lt { [ ltic 2 div ] 0 setdash
+      x1 w0b w0 sub w0 div c mul sub
+      neg x2 x1 sub div X mul 0 M
+      lw LW 0 Ytop RL stroke} if } if
+} bind def
+% construct y arrays: repeat highest value as default
+/afill {al i add exch al - get put i+} bind def
+/jgp+ {j get put j+} bind def
+/yn {j0 dup 3 -1 roll length dup /al exch def gt} bind def
+/tp {type /arraytype eq} bind def
+      Yl 0 0 put Y tp {Y nbox yn {i0 al sub {Yi Y afill} repeat al} if
+      {Yi j Y jgp+} repeat} {i0 nbox {Yi i Y put i+} repeat} ifelse
+      Yl 1 Yi putinterval
+      nbox 1 gt {i0 nbox - {i+ Yl i + Yi i get Yl i get add put} repeat } if
+% (Y=) pr Y ==  (Yi=) pr Yi == (Yl=) pr Yl ==
+gi 2 ne {
+      y1 tp {y1 nbox yn {i0 al sub {y1i y1 afill} repeat al} if
+      {y1i j y1 jgp+} repeat}{i0 nbox {y1i i y1 put i+} repeat} ifelse
+% (y1=) pr y1 ==  (y1i=) pr y1i ==
+      y2 tp {y2 nbox yn {i0 al sub {y2i y2 afill} repeat al} if
+      {y2i j y2 jgp+} repeat}{i0 nbox {y2i i y2 put i+} repeat} ifelse
+% (y2=) pr y2 ==  (y2i=) pr y2i ==
+      /y1clip CD {nbox array /y1clipi exch def y1i y1clipi copy pop}
+      {/y1clipi CD {nbox array /y1clipi exch def} if
+      y1clip tp {y1clip nbox yn {i0 al sub {y1clipi y1clip afill} repeat al} if
+      {y1clipi j y1clip jgp+} repeat}{i0 nbox {y1clipi i y1clip put i+}
+      repeat} ifelse} ifelse
+% (y1clipi=) pr y1clipi ==
+      /y2clip CD {nbox array /y2clipi exch def y2i y2clipi copy pop}
+      {/y2clipi CD {nbox array /y2clipi exch def} if
+      y2clip tp {y2clip nbox yn {i0 al sub {y2clipi y2clip afill} repeat al} if
+      {y2clipi j y2clip jgp+} repeat}{i0 nbox {y2clipi i y2clip put i+}
+      repeat} ifelse} ifelse
+% (y2clipi=) pr y2clipi ==
+      ytic tp {ytic nbox yn {i0 al sub {ytici ytic afill} repeat al} if {ytici
+      j ytic jgp+} repeat}{i0 nbox {ytici i ytic put i+}repeat} ifelse
+% (ytic=) pr ytic ==  (ytici=) pr ytici ==
+      iyt tp {iyt nbox yn {i0 al sub {iyti iyt afill} repeat al} if {iyti j
+      iyt jgp+} repeat} {i0 nbox {iyti i iyt put i+} repeat} ifelse
+% (iyt=) pr iyt ==  (iyti=) pr iyti ==
+      ylab tp {ylab nbox yn {i0 al sub {ylabi ylab afill} repeat al} if {ylabi
+      j ylab jgp+} repeat}{i0 nbox {ylabi i ylab put i+}repeat} ifelse
+% (ylab=) pr ylab ==  (ylabi=) pr ylabi ==
+      yunits tp {yunits nbox yn {i0 al sub {yunitsi yunits afill} repeat al}
+      if {yunitsi j yunits jgp+} repeat}{i0 nbox {yunitsi i yunits put i+}
+      repeat} ifelse
+% (yunits=) pr yunits ==  (yunitsi=) pr yunitsi ==
+      yexpand tp {yexpand nbox yn {i0 al sub {yexpandi yexpand afill}
+      repeat al} if {yexpandi j yexpand jgp+} repeat}{i0 nbox {yexpandi i
+      yexpand put i+}repeat} ifelse
+% (yexpand=) pr yexpand ==  (yexpandi=) pr yexpandi ==
+      yexpandlin tp {yexpandlin nbox yn {i0 al sub {yexpandlini yexpandlin
+      afill} repeat al} if {yexpandlini j yexpandlin jgp+} repeat}{i0 nbox
+      {yexpandlini i yexpandlin put i+}repeat} ifelse
+% (yexpandlin=) pr yexpandlin ==  (yexpandlini=) pr yexpandlini ==
+      zerodash tp {zerodash nbox yn {i0 al sub {zerodashi zerodash
+      afill} repeat al} if {zerodashi j zerodash jgp+} repeat}{i0 nbox
+      {zerodashi i zerodash put i+}repeat} ifelse
+% (zerodash=) pr zerodash ==  (zerodashi=) pr zerodashi ==
+      onedash tp {onedash nbox yn {i0 al sub {onedashi onedash
+      afill} repeat al} if {onedashi j onedash jgp+} repeat}{i0 nbox
+      {onedashi i onedash put i+}repeat} ifelse
+% (onedash=) pr onedash ==  (onedashi=) pr onedashi ==
+} if
+      drawmode tp {drawmode nmax yn {i0 al sub {drawmj drawmode afill} repeat
+      al} if {drawmj j drawmode jgp+} repeat} {i0 nmax {drawmj i
+      drawmode put i+} repeat} ifelse
+% /yn {j0 dup 3 -1 roll length dup /al exch def gt} bind def
+%/afill {al i add exch al - get put i+} bind def
+%/jgp+ {j get put j+} bind def
+      colormode tp
+      % Is colormode an array? if yes: is it filled?
+      {colormode nmax 3 mul j0 dup 3 -1 roll length dup /al exch def gt
+         % if not, first fill array, by repeating last three
+        {i0 al sub 3 div cvi
+        {colormj al i add  colormode al 3 sub get put
+        colormj al i add 1 add colormode al 2 sub get put
+         colormj al i add 2 add colormode al 1 sub get put i+ i+ i+
+        } repeat al} if
+        % put all colormodes in colormj
+        {colormj j colormode j get put j+  } repeat}
+      % if not an array
+      {i0 nmax 3 mul {colormj i colormode put i+} repeat} ifelse
+% rearrange
+      gmode {drawmj aload pop rearr {drawmj exch 1 sub get} forall
+      i0 rearr length {count dup /sl exch def rearr i get i sub neg roll pop
+      sl 1 sub rearr i get i + sub roll i+} repeat drawmj astore pop} if
+% (drawmode=) pr drawmode ==  (drawmj=) pr drawmj ==
+% (colormode=) pr colormode ==  (colormj=) pr colormj ==
+% Clip whole region
+      gsave %--- for clip ----
+itrue {Yl nbox get}{0} ifelse /Ytop exch def
+      X Ytop gmode {G add 0 G neg}{0 0} ifelse box clip
+/jfile 0 cvi def  % counts file number
+      gmode {/posim G neg g1a g1 sub gtoG add def /jgfile 0 cvi def} if
+} bind def %readpar
+/HH_DICT 200 dict def
+/t0 usertime def
+%/time {usertime t0 sub 1000 div (time (sec) ) print = flush} bind def
+/time {0 pop} bind def
+%/vm {( vm ) print vmstatus pop 50088 sub = flush pop} bind def
+/vm {0 pop} bind def
+/mm {72 mul 25.4 div} bind def
+/LW /setlinewidth load def
+1 setlinejoin
+%/pr {print flush} bind def
+/pr {pop} bind def
+/M /moveto load def
+/RM /rmoveto load def
+/L /lineto load def
+/RL /rlineto load def
+/CP /currentpoint load def
+/CD {currentdict exch known not} def
+/SG {stroke grestore} def
+/+ {1 add} bind def
+/- {1 sub} bind def
+/i0 {/i 0 def} bind def
+/j0 {/j 0 def} bind def
+/i+ {/i i + def} bind def
+/j+ {/j j + def} bind def
+/alpha (\141) def /beta (\142) def /gamma (\147) def /delta (\144) def
+/epsilon (\145) def /zeta (\172) def /eta (\150) def /theta (\112) def
+/iota (\151) def /kappa (\153) def /lambda (\154) def /mu (\155) def
+/nu (\156) def /xi (\170) def /omicron (\157) def /pi (\160) def
+/rho (\162) def  /sigma (\163) def /tau (\164) def /upsilon (\165) def
+/phi (\152) def /chi (\143) def /psi (\171) def /omega (\167) def
+/Gamma (\107) def /Delta (\104) def /Theta (\121) def /Lambda (\114) def
+/Xi (\130) def /Pi (\120) def /Sigma (\123) def /Phi (\106) def
+/Psi (\131) def /Omega (\127) def /arrowright (\256) def /arrowleft (\254) def
+/angleleft (\341) def /angleright (\361) def
+/proportional (\265) def /approxequal (\273) def /radical (\326) def /radicalex (\140) def
+/bracerighttp (\374) def /bracerightmid (\375) def /bracerightbt (\376) def
+/gms {gsave mat setmatrix CP newpath 0.36 LW odotsize circle} def
+/odot { % example: (15 M/M) show odot (10 R/R) show odot
+       /odotsize fscale 2.5 div def
+       (o) stringwidth pop 2 div dup /hs exch def 0 RM gms SG
+       /odotsize odotsize 5 div def gms fill SG hs 0 RM
+       } def
+/reencsmalldict 12 dict def /ReEncodeSmall {reencsmalldict begin
+/newcodesandnames exch def /newfontname exch def /basefontname exch def
+/basefontdict basefontname findfont def /newfont basefontdict maxlength dict
+def basefontdict {exch dup /FID ne {dup /Encoding eq {exch dup length array
+copy newfont 3 1 roll put} {exch newfont 3 1 roll put} ifelse} {pop pop}
+ifelse} forall newfont /FontName newfontname put newcodesandnames aload pop
+newcodesandnames length 2 idiv {newfont /Encoding get 3 1 roll put} repeat
+newfontname newfont definefont pop end} def
+/ReEnc {font /font-ext [ 8#055 /endash 8#260 /eacute 8#265 /Aring
+                         8#276 /edieresis 8#300 /plusminus]
+% Example: (\265) produces Aring
+ReEncodeSmall /font /font-ext def} def
+/deffont {font findfont fscale scalefont setfont} bind def
+/sfont {sfontsize /fscaleold fscale def fscale mul /fscale exch def deffont} def
+/rfont {/fscale fscaleold def deffont} bind def
+/ymovsf {fscale mul 0 exch RM sfont} bind def
+/ymovrf {fscaleold mul 0 exch RM rfont} bind def
+/symb {/f currentfont def /Symbol findfont fscale scalefont setfont} bind def
+/mixshow {{($) search exch show {pop ($) search pop dup length 1 ne {dup
+      length 0 eq {($) show} {cvn load} ifelse} if symb show f setfont pop}
+      {exit} ifelse} loop} bind def
+/eshow {{(^) search exch mixshow {pop (^) search pop dup length 0 eq {(^)
+      show} if .4 ymovsf mixshow -.4 ymovrf pop} {exit} ifelse} loop} bind def
+/sshow {{(_) search exch eshow {pop (_) search pop dup length 0 eq {(_) show}
+      if -.25 ymovsf eshow .25 ymovrf pop} {exit} ifelse} loop} bind def
+/rsshow {dup sstrwidth neg 0 RM sshow} bind def
+/csshow {dup sstrwidth -2 div 0 RM sshow} bind def
+/sw {stringwidth pop} bind def
+/str+ {sw /strsw exch strsw add def} bind def
+/mixstr+ {% takes string, adds stringwidth to strsw
+      {($) search exch str+ {pop ($) search pop dup length 1 ne
+      {dup length 0 eq {($) str+} {cvn load} ifelse} if
+      symb str+ f setfont pop} {exit} ifelse} loop} bind def
+/estr+ {% takes string, adds stringwidth to strsw
+      {(^) search exch mixstr+ {pop (^) search pop dup length 0 eq {(^) str+}
+      if sfont mixstr+ rfont pop} {exit} ifelse} loop} bind def
+/sstrwidth {/strsw 0 def      % takes string, leaves stringwidth
+      {(_) search exch estr+ {pop (_) search pop dup length 0 eq {(_) str+} if
+      sfont estr+ rfont pop} {exit} ifelse} loop strsw /strsw 0 def} bind def
+/concnumstring { % leaves a new string on the stack from a number and a string
+      exch dup log 1 add cvi dup string /str1 exch def exch str1 cvs
+      /str1 exch def exch dup length 3 -1 roll add string /concstr exch def
+      concstr 0 str1 putinterval concstr str1 length 3 -1 roll putinterval
+      concstr} bind def
+/line {80 string} bind def
+/LT {{( ) anchorsearch {pop} {exit} ifelse} loop} bind def      % Lefttrim
+HH_DICT begin
+/nbox 1 def % default number of boxes
+/readepochs {
+% 500 is arbitrary maximum number of files  (65000 is real maximum)
+      /flist 500 array def
+      i0 {currentfile line readline pop dup (end) eq {pop exit}
+         {LT flist exch i exch put i+} ifelse} loop
+      (number of files = ) pr i  /nmax exch def
+      nmax dup array /tlist exch def dup array /hlist exch def
+           dup array /tglist exch def dup array /drawmj exch def
+	   3 mul array /colormj exch def
+      /nmax1 0 def i0 nmax { % construct hlist and tlist
+      flist i get ( ) search pop cvr dup tlist exch i exch put tglist exch
+           nmax1 exch put pop LT ( ) search {flist exch i exch put pop LT cvi
+           hlist exch i exch dup dup nbox gt {/nbox exch cvi def} {pop} ifelse
+           dup 1 ne {nmax1 - /nmax1 exch def} if put} % exclude if hlist ne 1
+           {flist exch i exch put hlist i 1 put} ifelse i+
+           nmax1 + /nmax1 exch def} bind repeat
+      1 2 eq {(nmax1 = ) pr nmax1 =  % number of files in first and grayscale box
+      (tlist ) pr tlist ==   % time epoch list
+      (tglist ) pr tglist == % time epoch list, only valid for grayscale box
+      (hlist ) pr hlist ==   % height list
+      (number of boxes = ) pr} if  nbox  dup dup dup dup dup dup dup dup dup
+           dup dup dup array /Yi exch def + array /Yl exch def % Y intervals, Y levels
+           array /y1i exch def array /y2i exch def dup array /yunitsi exch def
+           array /ytici exch def array /iyti exch def array /ylabi exch def
+           array /yexpandi exch def array /yexpandlini exch def
+           array /zerodashi exch def array /onedashi exch def
+           array /xoffy exch def array /lefty exch def
+      nmax 1 ne nmax1 1 ne and {nmax1 array /glist exch def
+      tglist 0 get dup tglist 1 get sub dup glist exch 0 exch neg put
+      2 div add /g1a exch def tglist nmax1 - get dup tglist nmax1 2 sub get sub
+      dup glist exch nmax1 - exch put 2 div add /g2a exch def
+%      (g1a = ) pr g1a = (g2a = ) pr g2a =
+      /g1 CD {/g1 g1a def} if
+      /g2 CD {/g2 g2a def} if
+      i0 i+ nmax1 2 sub {glist i tglist i get dup tglist i - get sub exch
+                        tglist i + get sub sub 2 div put i+} bind repeat
+%      (glist ) pr glist ==   % list of y values in grayscale box for each file
+      } if
+       } bind def
+/M2 {3 1 roll M dup 2 div} def
+/xbar {barsize 0 ne {gsave mat setmatrix CP newpath lw LW barsize
+       M2 0 RM neg 0 RL SG} if} bind def
+/ybar {barsize 0 ne {gsave mat setmatrix CP newpath lw LW barsize
+       M2 0 exch RM neg 0 exch RL SG} if} bind def
+% xc, yc, length should be on the stack
+/circle {2 div 0 360 arc} bind def
+/csquare {M2 dup RM dup neg 0 RL dup neg 0 exch RL 0 RL closepath} bind def
+/ccross1 {M2 dup RM dup neg dup RL dup 0 RM dup neg exch RL} bind def
+/ccross {3 copy M2 dup RM neg dup RL 3 1 roll M dup -2 div dup neg RM
+         dup neg RL} bind def
+/cplus {3 copy M2 0 RM neg 0 RL M2 0 exch RM neg 0 exch RL} bind def
+/cdiam {3 1 roll M 2 div dup 0 RM dup neg dup RL dup neg dup neg
+        RL dup RL closepath} bind def
+/dmj {drawmj jfile get dup 0 ge {0}{1} ifelse
+colormode [0 0 0] ne { pop
+colormj jfile 3 mul get colormj jfile 3 mul 1 add get
+colormj jfile 3 mul 2 add get setrgbcolor} {setgray } ifelse
+      abs
+      dup 1000 ge {/ttrue true def 1000 sub}{/ttrue false def} ifelse
+      dup 100 ge {/dtrue true def 100  sub}{/dtrue false def} ifelse
+      } bind def
+      % drawmode[j] =
+      % 0 connect only
+      % 1 open circle             +   10 = symbol + connect
+      % 2 filled circle           +   20 = symbol + connect + error bars
+      % 3 open box                +   30 = symbol + error bars
+      % 4 filled box              +   40 = error bars only
+      % 5 plus                    +   50 = connect + error bars
+      % 6 crosss                  +  100 = connect with dashed line
+      % 7 open circle with plus   + 1000 = connect with thick line
+      % 8 open square with cross
+      % 9 open diamond
+      % 9.5 filled diamond
+/pathlength 0 def
+/D {
+% connect lines for 11 < j < 29 or j > 50
+      dmj dup dup 10 ge exch 29 le and exch 50 gt or {xi yi
+      dtrue {dasharray dashoffset setdash L gsave mat setmatrix
+      pathbbox 3 -1 roll sub dup mul 3 1 roll sub dup mul add sqrt grestore
+      pathlength add dup /pathlength exch def dup patternlength div truncate
+      patternlength mul sub /dashoffset exch def}
+      {L} ifelse} if
+% draw symbols if j < 39
+      dmj 40 lt
+      {dmj 0 eq {xi yi L}
+      {xi yi M gsave mat setmatrix CP newpath lw LW drawsize
+       dmj 10 mod 1 eq {circle} if
+       dmj 10 mod 2 eq {3 copy circle fill currentgray 1 eq {gsave
+      0 setgray
+     % 1 0 1 setrgbcolor
+             lw 2 mul add circle SG} {pop pop pop} ifelse} if
+       dmj 10 mod 3 eq {csquare} if
+       dmj 10 mod 4 eq {csquare fill} if
+       dmj 10 mod 5 eq {cplus} if
+       dmj 10 mod 6 eq {ccross} if
+       dmj 10 mod 7 eq {3 copy circle cplus} if  % reversed 6 Sep 1996
+       dmj 10 mod 8 eq {3 copy cplus csquare} if
+       dmj 10 mod 9 eq {cdiam} if
+       dmj 10 mod 9.5 eq {cdiam fill} if
+       SG} ifelse } if
+% draw error bars for j > 20
+      dmj 20 ge
+      {xi yi M
+       errorb {errorx dup 0 ne {dup dup 0 RM ybar -2 mul 0 RL ybar 0 RM}
+            {pop} ifelse} if
+       errorb {errory dup 0 ne {dup dup 0 exch RM xbar -2 mul 0 exch RL
+            xbar 0 exch RM} {pop} ifelse} if} if
+      } bind def
+/xtoX {x2 x1 sub div X mul} bind def
+/hj {hlist jfile get} bind def
+/hja {hj abs} bind def
+/yj {hja dup 0 ne {-} if get} bind def
+/gtoG {g2 g1 sub div G mul} bind def
+/gmode {gi 0 ne nmax 1 ne and} bind def
+/gtrue {gmode hj 1 eq and nmax 1 ne and} bind def
+/gput {scan i yi yoffset sub i+
+      lcut sub hcut lcut sub div inverse 1 eq {1 sub neg} if 255 mul cvi
+      dup 0 lt {pop 0} if dup 255 gt {pop 255} if put} bind def
+/F { %((firstpoint) ) pr
+      (readscan file: ) pr %jfile + =  % counts files % time
+      yexpandi yj 0 ne gi 2 ne and hj 0 ne and
+      {gmode hj 0 gt and {tglist jgfile} {tlist jfile} ifelse get
+      tlist 0 get sub yexpandi yj mul mm y2i yj y1i yj sub mul Yi yj div
+      /yoffset exch def}{/yoffset 0 def} ifelse
+      yexpandlini yj 0 ne gi 2 ne and {yexpandlini yj y2i yj y1i yj sub mul
+      Yi yj div jfile mul /yoffset exch def} if
+      gtrue {glist jgfile get gtoG /yim exch def} if
+      /saveobj save def %********
+      gsave % count (stack items = ) pr =  pstack
+      counttomark 2 eq {/errorb false def}
+             {/errorb true def /errory exch def /errorx exch def} ifelse
+      yoffset add /yi exch def /xi exch def
+      pop % delete mark
+      hja 0 ne
+      {itrue {0 Yl yj translate X x2 x1 sub div Yi yj y2i yj y1i yj sub div
+              scale x1 neg y1i yj neg translate
+              x2 x1 sub y2clipi yj y1clipi yj sub x1 y1clipi yj box clip
+              0 dasharray {add} forall 2 mul /patternlength exch def
+              newpath xi yi M D} if
+       gtrue {/xmin xi def /scan 3000 string def % arbitrary 3000 point limit
+              i0 gput} if  % start counter for scan
+      } {gmode {0 G neg translate X x2 x1 sub div G g2a g1a sub div
+         scale x1 neg g1a neg translate 0 dasharray {add} forall 2 mul
+         /patternlength exch def newpath xi yi M D} if } ifelse
+      /id dashcurve neg def
+      } bind def
+/N {xi yi M              % move to previous point
+      errorb {/errory exch def /errorx exch def} if
+      yoffset add /yi exch def /xi exch def hj 1 eq gi 3 eq and not {
+      dtrue {/id id + def id 0 gt {D} if
+      id dashcurve - gt {/id dashcurve neg def} if} {D} ifelse
+      } if
+      gsave mat setmatrix lw special 1 eq {jfile 0 eq {0.72 add} if} if
+      ttrue {0.72 add} if LW SG newpath
+      gtrue hja 0 ne and {gput} if
+      } bind def
+/enddata {matrix currentmatrix setmatrix
+      lw special 1 eq {jfile 0 eq {0.72 add} if} if
+%       /specialw CD not {jfile glist length 1 sub eq {2 add 1 setgray} if} if
+      ttrue {0.72 add} if LW SG ((end draw)) pr
+      gtrue hja 0 ne and {/xmax xi def gsave x1 xmin sub xtoX neg posim
+         translate xmax xmin sub xtoX yim scale ((starting scan) ) pr time
+         i 1 8 [i 0 0 1 0 0] {scan} image grestore} if
+      /hlist CD {(finished) pr}
+                {( files to be done: ) pr hlist length jfile sub -
+                0 ne {mark} if } ifelse
+      saveobj restore  % ***************
+      gtrue {posim yim add /posim exch def /jgfile jgfile + cvi def} if
+      /jfile jfile + cvi def} bind def
+/mat matrix currentmatrix def
+/box {newpath lw LW M exch dup 0 RL exch 0 exch RL neg 0 RL closepath} bind def
+      % X,Y,x1,y1
+/boxes {grestore  %*-*-* from clip
+/im {i mul} bind def
+/ltm {ltic mul} bind def
+/center {gsave dup dup sw exch 0 get 8#261 eq {1 add} if -2 div 0 RM
+       1 0 8#261 4 3 roll widthshow grestore} bind def
+%/center {gsave csshow grestore} bind def
+%(still on stack before box: ) pr pstack
+vm time
+((drawing box)) pr
+      lw LW X Ytop gmode {G add 0 0 M X 0 RL stroke 0 G neg}{0 0} ifelse box
+      i0 nbox 1 gt {nbox - {0 Yl i + get M X 0 RL i+} repeat} if stroke
+      /it {ixt} bind def
+%outside    /ntic {it mul + i0} bind def  %it is number of interticks
+      /ntic {it mul i0} bind def  %inside
+      /ilen {0} bind def      % modulates long tickmarks
+%     /len {i it mod ilen eq {ltic} {ltic 2 div} ifelse} bind def
+      /nu0 {/nunits 0 def} bind def
+      nu0 % has to be reset and divided by two after each axis
+      /len {i it mod ilen eq {ltic /nunits nunits + def} {ltic 2 div} ifelse
+            } bind def
+% x axes
+      /x1r {x1 xtic div ceiling xtic mul} bind def
+      /dx {X x2 x1 sub div xtic mul ixt div} bind def
+      /it {ixt} bind def
+      /xb {x1r x1 sub xtic div ixt mul} bind def
+      /ilen {xb floor cvi} bind def
+      /xx1 {xb dup floor sub dx mul} bind def
+      /nta {i0 X xx1 sub X div x2 x1 sub ixt mul xtic div mul floor + cvi}
+            bind def
+/ticu {0 len RL len neg RM i+} bind def  %up
+/ticd {0 len neg RL len RM i+} bind def  %down
+% horizontal tics
+      interaxis 0 eq {nbox} {1} ifelse
+      j0 {j 0 ne {xx1 Yl j get M i0 nta {dx ticd} bind repeat} if % down
+      xx1 Yl j get M nu0 i0 nta {dx ticu} repeat j+} bind repeat  % up
+      gmode {xx1 G neg M nu0 i0 nta {dx ticd} bind repeat} if % down
+      /nxunits nunits 2 div cvi def
+%(nunits=) pr nunits =
+/YwM {xw1 Yl nbox j sub get M} bind def
+% top
+/taxis {axis 0 eq axis 3 eq or axis 5 eq or {/wtic xtic def /iwt ixt def} if
+      /w1 {x1 xtow wtic div ceiling wtic mul} bind def
+      /w2 {x2 xtow wtic div floor wtic mul} bind def
+      /nwtic {w2 w1 sub wtic div cvi} bind def   %integer
+      /dw {w2 wtox w1 wtox sub xtoX nwtic iwt mul div} bind def
+      /xw1 {w1 wtox x1 sub xtoX} bind def
+      /it {iwt} bind def
+      /ilen 0 def
+%Yl == (w1=) pr w1 = (w2=) pr w2 = (dw=) pr dw =
+%(nwtic=) pr nwtic = (xw1=) pr xw1 =
+      interaxis 0 eq {1} {nbox} ifelse j0
+ {j 0 ne {
+      YwM i0 nwtic ntic {dw ticu} bind repeat  % up
+      {CP pop X le {dw ticu} {exit} ifelse} bind loop
+        YwM   {CP pop 0 gt {0 ltic 2 div RL dw neg ltic -2 div RM} {exit}
+        ifelse} bind loop
+         } if
+      YwM i0 nwtic ntic {dw itrue {ticd}{ticu} ifelse} bind repeat  %down
+      {CP pop X le {dw itrue {ticd}{ticu} ifelse} {exit} ifelse} bind loop
+      YwM     {CP pop 0 gt {
+ltic itrue {-2}{2} ifelse div dup 0 exch RL dw neg exch neg RM
+} {exit}
+        ifelse} bind loop j+
+ } repeat stroke
+} bind def
+axis 0 eq axis 3 eq or axis 4 eq or % same top scale or constant shift relative to bottom axis
+      {/xtow {xaxshift add} bind def /wtox {xaxshift sub} bind def taxis} if
+axis 1 eq     % velocity
+      {/c 299792 def
+      /xtow {c div + w0 mul} bind def /wtox {w0 div - c mul} bind def
+      % no bind def!  % redefine w0 and w0b for radial velocity
+      /w0 vrad xtow def /w0b vrad c div + w0b mul def taxis
+      /restw {dup x1 ge {dup x2 le {x1 sub xtoX Yl j msize 0 lt {+} if
+             get M 0 msize ltm RL} {pop} ifelse} {pop} ifelse} bind def
+      /rdraw {0 restw w0b wtox restw gsave mat setmatrix 0.72 LW SG} bind def
+      /msize 1.4 def j0 nbox {rdraw j+} repeat  % up
+      itrue not {rdraw} if  % up
+      /msize -1.4 def j0 nbox {rdraw j+} repeat} if % down
+axis 2 eq     %JD-2440000 at bottom, Year at top; 3874 = 1 jan 1979
+     {/xtow {3874 sub 365.25 div 1979 add} bind def
+      /wtox {1979 sub 365.25 mul 3874 add} bind def taxis} if
+axis 5 eq     %Sidereal time at top; corrected 2000 Nov 29
+      {/xtow {1.0027379093 mul statut0 add } bind def
+      /wtox {statut0 sub 1.0027379093 div} bind def taxis} if
+((drawing xunits)) pr
+/cvstr {     %10 mul  % patch for correcting rounding off
+      dup dup round cvi sub abs 1e-6 lt {round cvi} if % 10 div
+            dup 10 string cvs exch 0 lt % 10 character limit on x and y units
+            {dup /dum exch def 0 (\261) putinterval dum} if} bind def
+ReEnc deffont
+      xunits 0 ne {x1r x1 sub xtoX -0.1 ltm fscale sub
+      gmode {G sub ltic sub} if M i0  % bottom
+      nxunits {x1r xtic im add dup 24 ge axis 5 eq and {24 sub} if
+               cvstr center dx ixt mul 0 RM i+} bind repeat
+axis 1 eq axis 2 eq or axis 4 eq or % top
+axis 0 ne xaxshift 0 ne axis 0 eq and or or %top
+      {xw1 dw iwt mul sub Ytop itrue {0.8}{1.5}ifelse ltm add M  %1.5 outside
+      i0 nwtic + {dw iwt mul 0 RM w2 w1 sub nwtic div im w1 add
+      dup 24 ge axis 5 eq and {24 sub} if
+      dup 24 ge axis 5 eq and {24 sub} if
+             cvstr center i+} bind repeat} if} if
+gi 2 ne {
+((drawing yaxis)) pr
+j0 nbox {
+      /y1r {y1i j get ytici j get div ceiling ytici j get mul} bind def
+      /dy {Yi j get y2i j get y1i j get sub div ytici j get mul iyti j get
+           div} bind def
+      /it {iyti j get} bind def
+      /yb {y1r y1i j get sub ytici j get div iyti j get mul} bind def
+      /ilen {yb floor cvi} bind def
+      /yy1 {yb dup floor sub dy mul} bind def
+      /nta {i0 Yi j get yy1 sub Yi j get div y2i j get y1i j get sub iyti
+            j get mul ytici j get div mul floor + cvi} bind def
+      0 yy1 Yl j get add M nta {len 0 RL len neg dy RM i+} bind repeat
+      nu0 X yy1 Yl j get add M nta {len neg 0 RL len dy RM i+} bind repeat
+      /nyunits nunits 2 div cvi def
+      stroke
+   yunitsi j get 0 ne {((drawing yunits)) pr % 1 left, 2 right, 3 both
+      /mag {log truncate (1) sw mul} bind def
+      /adjusty {% calculate y unit values, smallest unit = 0.1 or 0.01 etc,
+             y1r ytici j get im add        % but not 0.25
+             1 ytici j get div abs log truncate 1 add 10 exch exp dup
+             3 1 roll mul round exch div    % to avoid 9.3 + 0.1 = 9.400001
+             dup dup 0 ge {10 ge {dup mag neg 0 RM} if} %  positive unit
+             {-10 le {dup neg mag (\261) sw add 1 add}{(\261) sw 1 add} ifelse
+             neg 0 RM}  %  negative unit
+             ifelse } bind def  % moves and leaves unit on stack
+      lefty j 0 put % < 0 maximum width left of reference point
+      /righty 0 def     % > 0 maximum width right of reference point
+      /xloc {CP pop dup} bind def
+      i0 nyunits {0 Yl j get M adjusty xloc lefty j get lt
+      {lefty exch j exch put} {pop} ifelse
+      dup dup round eq {cvi} if cvstr stringwidth RM
+      xloc righty gt {/righty exch def} {pop} ifelse i+} bind repeat
+      xoffy j righty 0.5 ltm add neg put  % inside, 1.5 %outside
+      yunitsi j get 2 ne {
+      i0 nyunits {xoffy j get yy1 ilen dy mul add fscale .35 mul sub dy iyti
+             j get mul im add Yl j get add M adjusty dup 0 ge {cvstr show}
+             {cvstr 1 0 8#261 4 3 roll widthshow} ifelse i+} bind repeat} if
+      yunitsi j get 2 ge {
+      i0 nyunits {X 0.5 ltm add yy1 ilen dy mul add fscale .35 mul sub dy iyti
+             j get mul im add Yl j get add M
+             y1r ytici j get im add        % but not 0.25
+             1 ytici j get div abs log truncate 1 add 10 exch exp dup
+             3 1 roll mul round exch div    % to avoid 9.3 + 0.1 = 9.400001
+             dup 0 ge {cvstr show}{cvstr 1 0 8#261 4 3 roll widthshow} ifelse
+             i+} bind repeat} if
+      } {xoffy j 0 put lefty j 0 put} ifelse
+j+} repeat
+} if
+gmode {
+((drawing gaxis)) pr
+      /g1r {g1 gtic div ceiling gtic mul} bind def
+      /dg {G g2 g1 sub div gtic mul igt div} bind def
+      /it {igt} bind def
+      /gb {g1r g1 sub gtic div igt mul} bind def
+      /ilen {gb floor cvi} bind def
+      /gg1 {gb dup floor sub dg mul} bind def
+      /nta {i0 G gg1 sub G div g2 g1 sub igt mul gtic div mul floor
+            + cvi} bind def
+      0 gg1 G sub M nta {len neg 0 RL len dg RM i+} bind repeat
+      nu0 X gg1 G sub M nta {len 0 RL len neg dg RM i+} bind repeat
+      /ngunits nunits 2 div cvi def
+      stroke
+((drawing gunits)) pr
+gunits 0 ne {
+      /mag {log truncate (1) sw mul} bind def
+      /adjustg {% calculate g unit values, smallest unit = 0.1 or 0.01 etc,
+             g1r gtic im add        % but not 0.25
+             1 gtic div abs log truncate 1 add 10 exch exp dup
+             3 1 roll mul round exch div    % to avoid 9.3 + 0.1 = 9.400001
+             dup dup 0 ge {10 ge {dup mag neg 0 RM} if} %  positive unit
+             {-10 le {dup neg mag (\261) sw add 1 add}{(\261) sw 1 add} ifelse
+             neg 0 RM}  %  negative unit
+             ifelse } bind def  % moves and leaves unit on stack
+      /leftg 0 def % < 0 maximum width left of reference point
+      /rightg 0 def     % > 0 maximum width right of reference point
+      /xloc {CP pop dup} bind def
+      gsave
+      i0 ngunits {0 G neg M adjustg xloc leftg lt
+      {/leftg exch def} {pop} ifelse
+      dup dup round eq {cvi} if cvstr stringwidth RM
+      xloc rightg gt {/rightg exch def} {pop} ifelse i+} bind repeat
+      grestore
+      /xoffg rightg 1.5 ltm add neg def  % inside, 1.5 %outside
+      i0 ngunits {xoffg gg1 ilen dg mul add fscale .35 mul sub dg igt
+             mul im add G sub M adjustg dup 0 ge {cvstr show}
+             {cvstr 1 0 8#261 4 3 roll widthshow} ifelse i+} bind repeat
+      } {/xoffg 0 def /leftg 0 def} ifelse
+((drawing graybox)) pr
+/Xg0 itrue gi 3 eq ne {X}{X 3.5 ltm add} ifelse def
+/Yg0 itrue gi 3 eq ne {y1i 0 get dup lcut sub exch y2i 0 get sub div Yi 0 get
+                       mul} {G neg} ifelse def
+/Yg itrue gi 3 eq ne {hcut lcut sub y2i 0 get y1i 0 get sub div Yi 0 get mul}
+                     {G} ifelse def
+/DataString 256 string def 0 1 255 {DataString exch dup put} bind for
+      1 256 8 inverse 0 eq {[1 0 0 256 0 0]} {[1 0 0 -256 0 256]} ifelse
+      {DataString} Xg Yg Xg0 Yg0 gsave translate scale image grestore
+      0 setgray Xg Yg Xg0 Yg0 box stroke
+      Xg0 Xg 2 div add dup Yg0 fscale sub M lcut cvstr csshow % X on stack
+                       Yg ltic 2 div add Yg0 add M hcut cvstr csshow
+((end graybox)) pr
+timemarks 0 ne { ((drawing timemarks)) pr
+      sfont i0 nmax1 {tglist i get g1 sub gtoG G sub X ltic add exch M
+             0 -0.3 ltm RM flist i get dummyfile eq {( )}{($arrowleft$)} ifelse
+             sshow i+} bind repeat rfont} if
+} if % gmode only
+drawlabels vm grestore
+pageheader 0 ne {((printing FileInfo)) pr
+      /headlinepos 810 def
+      /Courier findfont 2.5 mm scalefont setfont gsave 25 headlinepos M} if
+} bind def  % boxes
+vm time
+%%EndProlog
+((getlist) ) pr
+readepochs
+0.0877 s31727.c4
+0.1978 s31745.c4
+0.2839 s31760.c4
+0.3133 s31765.c4
+0.3773 s31774.c4
+0.4462 s31783.c4
+0.4981 s31791.c4
+0.5515 s31801.c4
+end
+/rearr [] def
+readpar
+-4002.68  1.087 F
+-3983.31  1.088 N
+-3963.95  1.109 N
+-3944.58  1.145 N
+-3925.22  1.204 N
+-3905.86  1.233 N
+-3886.49  1.242 N
+-3867.13  1.241 N
+-3847.76  1.267 N
+-3828.40  1.271 N
+-3809.03  1.276 N
+-3789.67  1.249 N
+-3770.31  1.269 N
+-3750.94  1.296 N
+-3731.58  1.364 N
+-3712.21  1.358 N
+-3692.85  1.328 N
+-3673.49  1.282 N
+-3654.12  1.207 N
+-3634.76  1.127 N
+-3615.39  1.043 N
+-3596.03  1.015 N
+-3576.67 0.9917 N
+-3557.30 0.9631 N
+-3537.94 0.9505 N
+-3518.57 0.9354 N
+-3499.21 0.9607 N
+-3479.85 0.9562 N
+-3460.48 0.9777 N
+-3441.12 0.9835 N
+-3421.75  1.024 N
+-3402.39  1.043 N
+-3383.03  1.028 N
+-3363.66 0.9823 N
+-3344.30 0.9479 N
+-3324.93 0.9386 N
+-3305.57 0.9238 N
+-3286.20 0.9183 N
+-3266.84 0.9169 N
+-3247.48 0.9316 N
+-3228.11 0.9260 N
+-3208.75 0.9039 N
+-3189.38 0.8968 N
+-3170.02 0.8880 N
+-3150.66 0.8566 N
+-3131.29 0.8360 N
+-3111.93 0.8063 N
+-3092.56 0.7729 N
+-3073.20 0.7263 N
+-3053.84 0.6676 N
+-3034.47 0.6519 N
+-3015.11 0.6232 N
+-2995.74 0.6427 N
+-2976.38 0.6704 N
+-2957.02 0.6658 N
+-2937.65 0.6373 N
+-2918.29 0.6048 N
+-2898.92 0.6204 N
+-2879.56 0.6462 N
+-2860.19 0.6640 N
+-2840.83 0.6865 N
+-2821.47 0.7330 N
+-2802.10 0.7755 N
+-2782.74 0.8075 N
+-2763.37 0.8139 N
+-2744.01 0.8123 N
+-2724.65 0.8380 N
+-2705.28 0.8691 N
+-2685.92 0.8919 N
+-2666.55 0.9037 N
+-2647.19 0.9275 N
+-2627.83 0.9396 N
+-2608.46 0.9338 N
+-2589.10 0.9441 N
+-2569.73 0.9781 N
+-2550.37 0.9824 N
+-2531.01 0.9727 N
+-2511.64 0.9575 N
+-2492.28 0.9792 N
+-2472.91 0.9810 N
+-2453.55 0.9816 N
+-2434.18 0.9497 N
+-2414.82 0.8953 N
+-2395.46 0.8711 N
+-2376.09 0.8652 N
+-2356.73 0.8530 N
+-2337.36 0.7988 N
+-2318.00 0.7565 N
+-2298.64 0.7270 N
+-2279.27 0.7163 N
+-2259.91 0.7184 N
+-2240.54 0.7330 N
+-2221.18 0.7023 N
+-2201.82 0.6770 N
+-2182.45 0.6586 N
+-2163.09 0.6885 N
+-2143.72 0.6923 N
+-2124.36 0.6720 N
+-2105.00 0.6359 N
+-2085.63 0.5621 N
+-2066.27 0.5080 N
+-2046.90 0.4733 N
+-2027.54 0.4829 N
+-2008.17 0.4684 N
+-1988.81 0.4367 N
+-1969.45 0.4098 N
+-1950.08 0.4026 N
+-1930.72 0.3778 N
+-1911.35 0.3263 N
+-1891.99 0.2704 N
+-1872.63 0.2924 N
+-1853.26 0.2925 N
+-1833.90 0.2865 N
+-1814.53 0.2489 N
+-1795.17 0.2267 N
+-1775.81 0.2532 N
+-1756.44 0.2849 N
+-1737.08 0.3117 N
+-1717.71 0.2883 N
+-1698.35 0.2701 N
+-1678.99 0.2999 N
+-1659.62 0.3379 N
+-1640.26 0.3723 N
+-1620.89 0.3961 N
+-1601.53 0.4094 N
+-1582.17 0.3848 N
+-1562.80 0.3650 N
+-1543.44 0.3419 N
+-1524.07 0.3626 N
+-1504.71 0.3668 N
+-1485.34 0.3837 N
+-1465.98 0.3686 N
+-1446.62 0.3477 N
+-1427.25 0.3115 N
+-1407.89 0.2762 N
+-1388.52 0.2749 N
+-1369.16 0.2520 N
+-1349.80 0.2339 N
+-1330.43 0.1927 N
+-1311.07 0.1941 N
+-1291.70 0.2072 N
+-1272.34 0.2046 N
+-1252.98 0.1824 N
+-1233.61 0.1504 N
+-1214.25 0.1490 N
+-1194.88 0.1930 N
+-1175.52 0.2088 N
+-1156.16 0.1975 N
+-1136.79 0.1786 N
+-1117.43 0.1831 N
+-1098.06 0.1920 N
+-1078.70 0.1965 N
+-1059.33 0.2244 N
+-1039.97 0.2529 N
+-1020.61 0.2649 N
+-1001.24 0.2451 N
+ -981.88 0.2194 N
+ -962.51 0.1987 N
+ -943.15 0.2005 N
+ -923.79 0.2139 N
+ -904.42 0.2493 N
+ -885.06 0.2861 N
+ -865.69 0.3296 N
+ -846.33 0.3291 N
+ -826.97 0.3266 N
+ -807.60 0.3184 N
+ -788.24 0.3277 N
+ -768.87 0.3443 N
+ -749.51 0.3758 N
+ -730.15 0.3968 N
+ -710.78 0.3904 N
+ -691.42 0.3695 N
+ -672.05 0.3620 N
+ -652.69 0.3716 N
+ -633.32 0.3648 N
+ -613.96 0.3736 N
+ -594.60 0.3522 N
+ -575.23 0.3499 N
+ -555.87 0.3398 N
+ -536.50 0.3634 N
+ -517.14 0.3866 N
+ -497.78 0.3864 N
+ -478.41 0.3876 N
+ -459.05 0.3894 N
+ -439.68 0.4128 N
+ -420.32 0.4300 N
+ -400.96 0.4504 N
+ -381.59 0.4447 N
+ -362.23 0.4333 N
+ -342.86 0.3918 N
+ -323.50 0.3775 N
+ -304.14 0.3689 N
+ -284.77 0.3917 N
+ -265.41 0.4003 N
+ -246.04 0.4181 N
+ -226.68 0.4198 N
+ -207.31 0.4090 N
+ -187.95 0.4147 N
+ -168.59 0.4350 N
+ -149.22 0.4729 N
+ -129.86 0.4869 N
+ -110.49 0.4978 N
+  -91.13 0.5126 N
+  -71.77 0.4982 N
+  -52.40 0.4655 N
+  -33.04 0.4251 N
+  -13.67 0.4075 N
+    5.69 0.4246 N
+   25.05 0.4678 N
+   44.42 0.5225 N
+   63.78 0.5578 N
+   83.15 0.5890 N
+  102.51 0.6182 N
+  121.87 0.6339 N
+  141.24 0.6641 N
+  160.60 0.6834 N
+  179.97 0.7375 N
+  199.33 0.7282 N
+  218.69 0.7323 N
+  238.06 0.7081 N
+  257.42 0.7058 N
+  276.79 0.7329 N
+  296.15 0.7732 N
+  315.52 0.8040 N
+  334.88 0.7790 N
+  354.24 0.7718 N
+  373.61 0.8015 N
+  392.97 0.8488 N
+  412.34 0.8702 N
+  431.70 0.8589 N
+  451.06 0.8370 N
+  470.43 0.8245 N
+  489.79 0.8311 N
+  509.16 0.8780 N
+  528.52 0.9455 N
+  547.88  1.012 N
+  567.25  1.060 N
+  586.61  1.086 N
+  605.98  1.119 N
+  625.34  1.175 N
+  644.70  1.192 N
+  664.07  1.224 N
+  683.43  1.225 N
+  702.80  1.220 N
+  722.16  1.210 N
+  741.53  1.197 N
+  760.89  1.234 N
+  780.25  1.213 N
+  799.62  1.157 N
+  818.98  1.145 N
+  838.35  1.172 N
+  857.71  1.195 N
+  877.07  1.195 N
+  896.44  1.219 N
+  915.80  1.283 N
+  935.17  1.289 N
+  954.53  1.265 N
+  973.89  1.298 N
+  993.26  1.324 N
+ 1012.62  1.360 N
+ 1031.99  1.345 N
+ 1051.35  1.400 N
+ 1070.71  1.427 N
+ 1090.08  1.448 N
+ 1109.44  1.422 N
+ 1128.81  1.425 N
+ 1148.17  1.422 N
+ 1167.54  1.398 N
+ 1186.90  1.413 N
+ 1206.26  1.428 N
+ 1225.63  1.483 N
+ 1244.99  1.473 N
+ 1264.36  1.456 N
+ 1283.72  1.422 N
+ 1303.08  1.395 N
+ 1322.45  1.376 N
+ 1341.81  1.357 N
+ 1361.18  1.359 N
+ 1380.54  1.320 N
+ 1399.90  1.290 N
+ 1419.27  1.293 N
+ 1438.63  1.297 N
+ 1458.00  1.276 N
+ 1477.36  1.214 N
+ 1496.72  1.245 N
+ 1516.09  1.284 N
+ 1535.45  1.308 N
+ 1554.82  1.303 N
+ 1574.18  1.301 N
+ 1593.55  1.284 N
+ 1612.91  1.215 N
+ 1632.27  1.140 N
+ 1651.64  1.124 N
+ 1671.00  1.128 N
+ 1690.37  1.155 N
+ 1709.73  1.160 N
+ 1729.09  1.154 N
+ 1748.46  1.123 N
+ 1767.82  1.110 N
+ 1787.19  1.128 N
+ 1806.55  1.183 N
+ 1825.91  1.230 N
+ 1845.28  1.229 N
+ 1864.64  1.209 N
+ 1884.01  1.118 N
+ 1903.37  1.116 N
+ 1922.73  1.119 N
+ 1942.10  1.145 N
+ 1961.46  1.138 N
+ 1980.83  1.086 N
+ 2000.19  1.037 N
+ 2019.56  1.000 N
+ 2038.92 0.9753 N
+ 2058.28 0.9650 N
+ 2077.65 0.9152 N
+ 2097.01 0.9314 N
+ 2116.38 0.9534 N
+ 2135.74 0.9793 N
+ 2155.10 0.9658 N
+ 2174.47 0.9696 N
+ 2193.83 0.9598 N
+ 2213.20 0.9548 N
+ 2232.56 0.9251 N
+ 2251.92 0.8962 N
+ 2271.29 0.8894 N
+ 2290.65 0.8878 N
+ 2310.02 0.8513 N
+ 2329.38 0.7633 N
+ 2348.74 0.6997 N
+ 2368.11 0.7054 N
+ 2387.47 0.7257 N
+ 2406.84 0.7374 N
+ 2426.20 0.7280 N
+ 2445.56 0.7674 N
+ 2464.93 0.8231 N
+ 2484.29 0.8530 N
+ 2503.66 0.8877 N
+ 2523.02 0.8931 N
+ 2542.39 0.9313 N
+ 2561.75 0.9333 N
+ 2581.11 0.9178 N
+ 2600.48 0.8896 N
+ 2619.84 0.8429 N
+ 2639.21 0.8446 N
+ 2658.57 0.8376 N
+ 2677.93 0.8353 N
+ 2697.30 0.8098 N
+ 2716.66 0.7660 N
+ 2736.03 0.7246 N
+ 2755.39 0.6905 N
+ 2774.75 0.6899 N
+ 2794.12 0.7166 N
+ 2813.48 0.7488 N
+ 2832.85 0.7684 N
+ 2852.21 0.7509 N
+ 2871.57 0.7503 N
+ 2890.94 0.7806 N
+ 2910.30 0.8267 N
+ 2929.67 0.8495 N
+ 2949.03 0.8529 N
+ 2968.40 0.8379 N
+ 2987.76 0.8300 N
+ 3007.12 0.8220 N
+ 3026.49 0.8335 N
+ 3045.85 0.8449 N
+ 3065.22 0.8370 N
+ 3084.58 0.8357 N
+ 3103.94 0.8285 N
+ 3123.31 0.8607 N
+ 3142.67 0.8886 N
+ 3162.04 0.9315 N
+ 3181.40 0.9862 N
+ 3200.76  1.020 N
+ 3220.13  1.077 N
+ 3239.49  1.115 N
+ 3258.86  1.157 N
+ 3278.22  1.143 N
+ 3297.58  1.108 N
+ 3316.95  1.051 N
+ 3336.31  1.012 N
+ 3355.68 0.9661 N
+ 3375.04 0.9145 N
+ 3394.41 0.8852 N
+ 3413.77 0.8692 N
+ 3433.13 0.8667 N
+ 3452.50 0.8381 N
+ 3471.86 0.8030 N
+ 3491.23 0.7637 N
+ 3510.59 0.7529 N
+ 3529.95 0.7729 N
+ 3549.32 0.8089 N
+ 3568.68 0.8480 N
+ 3588.05 0.8825 N
+ 3607.41 0.9388 N
+ 3626.77 0.9585 N
+ 3646.14 0.9709 N
+ 3665.50 0.9836 N
+ 3684.87 0.9870 N
+ 3704.23 0.9514 N
+ 3723.59 0.8833 N
+ 3742.96 0.8407 N
+ 3762.32 0.8185 N
+ 3781.69 0.7918 N
+ 3801.05 0.7254 N
+ 3820.42 0.6983 N
+ 3839.78 0.6905 N
+ 3859.14 0.7025 N
+ 3878.51 0.6885 N
+ 3897.87 0.6802 N
+ 3917.24 0.7015 N
+ 3936.60 0.7342 N
+ 3955.96 0.7531 N
+ 3975.33 0.7650 N
+ 3994.69 0.7808 N
+ 4014.06 0.8030 N
+enddata
+-4002.68  1.084 F
+-3983.31  1.068 N
+-3963.95  1.061 N
+-3944.58  1.044 N
+-3925.22  1.092 N
+-3905.86  1.146 N
+-3886.49  1.177 N
+-3867.13  1.220 N
+-3847.76  1.238 N
+-3828.40  1.258 N
+-3809.03  1.235 N
+-3789.67  1.264 N
+-3770.31  1.320 N
+-3750.94  1.329 N
+-3731.58  1.342 N
+-3712.21  1.350 N
+-3692.85  1.340 N
+-3673.49  1.319 N
+-3654.12  1.260 N
+-3634.76  1.241 N
+-3615.39  1.184 N
+-3596.03  1.133 N
+-3576.67  1.075 N
+-3557.30  1.022 N
+-3537.94 0.9476 N
+-3518.57 0.8958 N
+-3499.21 0.8788 N
+-3479.85 0.8947 N
+-3460.48 0.9073 N
+-3441.12 0.9516 N
+-3421.75 0.9774 N
+-3402.39  1.033 N
+-3383.03  1.030 N
+-3363.66  1.035 N
+-3344.30  1.012 N
+-3324.93  1.006 N
+-3305.57 0.9788 N
+-3286.20 0.9793 N
+-3266.84 0.9439 N
+-3247.48 0.9222 N
+-3228.11 0.8867 N
+-3208.75 0.8820 N
+-3189.38 0.8836 N
+-3170.02 0.8607 N
+-3150.66 0.8475 N
+-3131.29 0.8428 N
+-3111.93 0.8216 N
+-3092.56 0.7809 N
+-3073.20 0.7321 N
+-3053.84 0.6914 N
+-3034.47 0.6776 N
+-3015.11 0.6536 N
+-2995.74 0.6617 N
+-2976.38 0.6540 N
+-2957.02 0.6607 N
+-2937.65 0.6403 N
+-2918.29 0.6125 N
+-2898.92 0.6230 N
+-2879.56 0.6516 N
+-2860.19 0.6645 N
+-2840.83 0.6661 N
+-2821.47 0.6542 N
+-2802.10 0.6675 N
+-2782.74 0.6736 N
+-2763.37 0.6945 N
+-2744.01 0.7019 N
+-2724.65 0.7209 N
+-2705.28 0.7219 N
+-2685.92 0.7800 N
+-2666.55 0.8218 N
+-2647.19 0.8681 N
+-2627.83 0.8853 N
+-2608.46 0.8921 N
+-2589.10 0.9217 N
+-2569.73 0.9620 N
+-2550.37 0.9634 N
+-2531.01 0.9270 N
+-2511.64 0.8759 N
+-2492.28 0.9218 N
+-2472.91 0.9635 N
+-2453.55 0.9690 N
+-2434.18 0.8963 N
+-2414.82 0.8656 N
+-2395.46 0.8854 N
+-2376.09 0.9262 N
+-2356.73 0.8964 N
+-2337.36 0.8336 N
+-2318.00 0.7793 N
+-2298.64 0.7784 N
+-2279.27 0.7442 N
+-2259.91 0.7340 N
+-2240.54 0.7147 N
+-2221.18 0.6962 N
+-2201.82 0.6527 N
+-2182.45 0.6331 N
+-2163.09 0.6511 N
+-2143.72 0.6583 N
+-2124.36 0.6670 N
+-2105.00 0.6554 N
+-2085.63 0.6213 N
+-2066.27 0.5550 N
+-2046.90 0.5235 N
+-2027.54 0.5032 N
+-2008.17 0.4829 N
+-1988.81 0.4614 N
+-1969.45 0.4568 N
+-1950.08 0.4631 N
+-1930.72 0.4243 N
+-1911.35 0.3541 N
+-1891.99 0.2962 N
+-1872.63 0.2804 N
+-1853.26 0.2816 N
+-1833.90 0.2859 N
+-1814.53 0.3015 N
+-1795.17 0.3157 N
+-1775.81 0.3095 N
+-1756.44 0.2808 N
+-1737.08 0.2689 N
+-1717.71 0.2766 N
+-1698.35 0.2910 N
+-1678.99 0.3210 N
+-1659.62 0.3497 N
+-1640.26 0.3732 N
+-1620.89 0.3715 N
+-1601.53 0.3662 N
+-1582.17 0.3573 N
+-1562.80 0.3746 N
+-1543.44 0.3650 N
+-1524.07 0.3680 N
+-1504.71 0.3480 N
+-1485.34 0.3783 N
+-1465.98 0.3924 N
+-1446.62 0.3766 N
+-1427.25 0.3257 N
+-1407.89 0.2796 N
+-1388.52 0.2717 N
+-1369.16 0.2554 N
+-1349.80 0.2506 N
+-1330.43 0.2319 N
+-1311.07 0.2323 N
+-1291.70 0.2213 N
+-1272.34 0.2276 N
+-1252.98 0.2267 N
+-1233.61 0.2162 N
+-1214.25 0.2147 N
+-1194.88 0.2377 N
+-1175.52 0.2505 N
+-1156.16 0.2526 N
+-1136.79 0.2135 N
+-1117.43 0.1656 N
+-1098.06 0.1245 N
+-1078.70 0.1383 N
+-1059.33 0.1909 N
+-1039.97 0.2079 N
+-1020.61 0.2009 N
+-1001.24 0.1728 N
+ -981.88 0.1795 N
+ -962.51 0.1897 N
+ -943.15 0.2242 N
+ -923.79 0.2423 N
+ -904.42 0.2619 N
+ -885.06 0.2630 N
+ -865.69 0.2860 N
+ -846.33 0.2886 N
+ -826.97 0.2912 N
+ -807.60 0.2814 N
+ -788.24 0.2896 N
+ -768.87 0.3173 N
+ -749.51 0.3437 N
+ -730.15 0.3438 N
+ -710.78 0.3253 N
+ -691.42 0.3075 N
+ -672.05 0.3294 N
+ -652.69 0.3203 N
+ -633.32 0.3067 N
+ -613.96 0.2857 N
+ -594.60 0.2885 N
+ -575.23 0.2985 N
+ -555.87 0.3010 N
+ -536.50 0.3068 N
+ -517.14 0.3129 N
+ -497.78 0.3163 N
+ -478.41 0.3301 N
+ -459.05 0.3357 N
+ -439.68 0.3332 N
+ -420.32 0.3387 N
+ -400.96 0.3651 N
+ -381.59 0.3677 N
+ -362.23 0.3526 N
+ -342.86 0.3331 N
+ -323.50 0.3252 N
+ -304.14 0.3343 N
+ -284.77 0.3510 N
+ -265.41 0.3800 N
+ -246.04 0.4193 N
+ -226.68 0.4172 N
+ -207.31 0.4267 N
+ -187.95 0.4087 N
+ -168.59 0.4267 N
+ -149.22 0.4304 N
+ -129.86 0.4553 N
+ -110.49 0.4609 N
+  -91.13 0.4789 N
+  -71.77 0.4607 N
+  -52.40 0.4329 N
+  -33.04 0.4055 N
+  -13.67 0.3970 N
+    5.69 0.4237 N
+   25.05 0.4420 N
+   44.42 0.4933 N
+   63.78 0.5255 N
+   83.15 0.5681 N
+  102.51 0.5958 N
+  121.87 0.6083 N
+  141.24 0.6392 N
+  160.60 0.6339 N
+  179.97 0.6695 N
+  199.33 0.6887 N
+  218.69 0.7272 N
+  238.06 0.7329 N
+  257.42 0.7328 N
+  276.79 0.7214 N
+  296.15 0.7506 N
+  315.52 0.7825 N
+  334.88 0.7974 N
+  354.24 0.8131 N
+  373.61 0.8226 N
+  392.97 0.8513 N
+  412.34 0.8487 N
+  431.70 0.8289 N
+  451.06 0.8218 N
+  470.43 0.8274 N
+  489.79 0.8733 N
+  509.16 0.9455 N
+  528.52  1.024 N
+  547.88  1.065 N
+  567.25  1.091 N
+  586.61  1.103 N
+  605.98  1.123 N
+  625.34  1.159 N
+  644.70  1.205 N
+  664.07  1.258 N
+  683.43  1.257 N
+  702.80  1.264 N
+  722.16  1.273 N
+  741.53  1.271 N
+  760.89  1.234 N
+  780.25  1.192 N
+  799.62  1.181 N
+  818.98  1.165 N
+  838.35  1.149 N
+  857.71  1.126 N
+  877.07  1.128 N
+  896.44  1.142 N
+  915.80  1.155 N
+  935.17  1.143 N
+  954.53  1.184 N
+  973.89  1.248 N
+  993.26  1.291 N
+ 1012.62  1.320 N
+ 1031.99  1.383 N
+ 1051.35  1.478 N
+ 1070.71  1.509 N
+ 1090.08  1.481 N
+ 1109.44  1.446 N
+ 1128.81  1.414 N
+ 1148.17  1.423 N
+ 1167.54  1.398 N
+ 1186.90  1.411 N
+ 1206.26  1.421 N
+ 1225.63  1.493 N
+ 1244.99  1.508 N
+ 1264.36  1.485 N
+ 1283.72  1.428 N
+ 1303.08  1.404 N
+ 1322.45  1.399 N
+ 1341.81  1.429 N
+ 1361.18  1.433 N
+ 1380.54  1.386 N
+ 1399.90  1.320 N
+ 1419.27  1.276 N
+ 1438.63  1.281 N
+ 1458.00  1.241 N
+ 1477.36  1.202 N
+ 1496.72  1.172 N
+ 1516.09  1.176 N
+ 1535.45  1.216 N
+ 1554.82  1.234 N
+ 1574.18  1.249 N
+ 1593.55  1.232 N
+ 1612.91  1.187 N
+ 1632.27  1.215 N
+ 1651.64  1.212 N
+ 1671.00  1.238 N
+ 1690.37  1.158 N
+ 1709.73  1.112 N
+ 1729.09  1.068 N
+ 1748.46  1.058 N
+ 1767.82  1.070 N
+ 1787.19  1.054 N
+ 1806.55  1.085 N
+ 1825.91  1.068 N
+ 1845.28  1.134 N
+ 1864.64  1.139 N
+ 1884.01  1.167 N
+ 1903.37  1.149 N
+ 1922.73  1.135 N
+ 1942.10  1.155 N
+ 1961.46  1.181 N
+ 1980.83  1.165 N
+ 2000.19  1.085 N
+ 2019.56  1.017 N
+ 2038.92 0.9936 N
+ 2058.28 0.9846 N
+ 2077.65 0.9565 N
+ 2097.01 0.9420 N
+ 2116.38 0.9485 N
+ 2135.74 0.9621 N
+ 2155.10 0.9806 N
+ 2174.47  1.014 N
+ 2193.83  1.033 N
+ 2213.20  1.057 N
+ 2232.56  1.057 N
+ 2251.92  1.027 N
+ 2271.29  1.006 N
+ 2290.65 0.9245 N
+ 2310.02 0.8703 N
+ 2329.38 0.7790 N
+ 2348.74 0.7459 N
+ 2368.11 0.6687 N
+ 2387.47 0.6610 N
+ 2406.84 0.6785 N
+ 2426.20 0.7596 N
+ 2445.56 0.8065 N
+ 2464.93 0.8125 N
+ 2484.29 0.7800 N
+ 2503.66 0.7480 N
+ 2523.02 0.7611 N
+ 2542.39 0.8293 N
+ 2561.75 0.8678 N
+ 2581.11 0.8785 N
+ 2600.48 0.8868 N
+ 2619.84 0.9115 N
+ 2639.21 0.9448 N
+ 2658.57 0.9366 N
+ 2677.93 0.9020 N
+ 2697.30 0.8531 N
+ 2716.66 0.8053 N
+ 2736.03 0.7908 N
+ 2755.39 0.7684 N
+ 2774.75 0.7552 N
+ 2794.12 0.7449 N
+ 2813.48 0.7523 N
+ 2832.85 0.7290 N
+ 2852.21 0.6949 N
+ 2871.57 0.6670 N
+ 2890.94 0.6918 N
+ 2910.30 0.7164 N
+ 2929.67 0.7431 N
+ 2949.03 0.7610 N
+ 2968.40 0.7907 N
+ 2987.76 0.8232 N
+ 3007.12 0.8138 N
+ 3026.49 0.7996 N
+ 3045.85 0.7919 N
+ 3065.22 0.7790 N
+ 3084.58 0.7785 N
+ 3103.94 0.7871 N
+ 3123.31 0.8239 N
+ 3142.67 0.8333 N
+ 3162.04 0.8183 N
+ 3181.40 0.8367 N
+ 3200.76 0.9010 N
+ 3220.13 0.9764 N
+ 3239.49  1.007 N
+ 3258.86  1.042 N
+ 3278.22  1.073 N
+ 3297.58  1.122 N
+ 3316.95  1.096 N
+ 3336.31  1.065 N
+ 3355.68  1.049 N
+ 3375.04  1.048 N
+ 3394.41  1.027 N
+ 3413.77 0.9750 N
+ 3433.13 0.9173 N
+ 3452.50 0.8499 N
+ 3471.86 0.7832 N
+ 3491.23 0.7437 N
+ 3510.59 0.7208 N
+ 3529.95 0.7289 N
+ 3549.32 0.7260 N
+ 3568.68 0.7591 N
+ 3588.05 0.8205 N
+ 3607.41 0.8544 N
+ 3626.77 0.8627 N
+ 3646.14 0.8672 N
+ 3665.50 0.9177 N
+ 3684.87 0.9744 N
+ 3704.23 0.9816 N
+ 3723.59 0.9611 N
+ 3742.96 0.9087 N
+ 3762.32 0.8799 N
+ 3781.69 0.8494 N
+ 3801.05 0.8554 N
+ 3820.42 0.8219 N
+ 3839.78 0.7580 N
+ 3859.14 0.6628 N
+ 3878.51 0.6003 N
+ 3897.87 0.5943 N
+ 3917.24 0.6185 N
+ 3936.60 0.6605 N
+ 3955.96 0.6845 N
+ 3975.33 0.7061 N
+ 3994.69 0.7052 N
+ 4014.06 0.7109 N
+enddata
+-4002.68  1.107 F
+-3983.31  1.099 N
+-3963.95  1.089 N
+-3944.58  1.100 N
+-3925.22  1.119 N
+-3905.86  1.105 N
+-3886.49  1.111 N
+-3867.13  1.138 N
+-3847.76  1.201 N
+-3828.40  1.208 N
+-3809.03  1.211 N
+-3789.67  1.213 N
+-3770.31  1.248 N
+-3750.94  1.295 N
+-3731.58  1.344 N
+-3712.21  1.389 N
+-3692.85  1.406 N
+-3673.49  1.414 N
+-3654.12  1.399 N
+-3634.76  1.361 N
+-3615.39  1.310 N
+-3596.03  1.291 N
+-3576.67  1.245 N
+-3557.30  1.195 N
+-3537.94  1.107 N
+-3518.57  1.045 N
+-3499.21 0.9970 N
+-3479.85 0.9555 N
+-3460.48 0.9344 N
+-3441.12 0.9260 N
+-3421.75 0.9457 N
+-3402.39 0.9487 N
+-3383.03 0.9442 N
+-3363.66 0.9435 N
+-3344.30 0.9557 N
+-3324.93 0.9814 N
+-3305.57 0.9883 N
+-3286.20 0.9757 N
+-3266.84 0.9764 N
+-3247.48 0.9818 N
+-3228.11 0.9861 N
+-3208.75 0.9636 N
+-3189.38 0.9312 N
+-3170.02 0.8879 N
+-3150.66 0.8586 N
+-3131.29 0.8470 N
+-3111.93 0.8690 N
+-3092.56 0.8580 N
+-3073.20 0.8155 N
+-3053.84 0.7472 N
+-3034.47 0.7005 N
+-3015.11 0.6809 N
+-2995.74 0.6569 N
+-2976.38 0.6224 N
+-2957.02 0.5965 N
+-2937.65 0.5936 N
+-2918.29 0.6179 N
+-2898.92 0.6481 N
+-2879.56 0.6669 N
+-2860.19 0.6694 N
+-2840.83 0.6592 N
+-2821.47 0.6664 N
+-2802.10 0.6731 N
+-2782.74 0.6770 N
+-2763.37 0.6822 N
+-2744.01 0.6944 N
+-2724.65 0.7141 N
+-2705.28 0.7439 N
+-2685.92 0.7548 N
+-2666.55 0.7656 N
+-2647.19 0.7783 N
+-2627.83 0.8284 N
+-2608.46 0.8482 N
+-2589.10 0.8673 N
+-2569.73 0.8669 N
+-2550.37 0.9106 N
+-2531.01 0.9259 N
+-2511.64 0.9217 N
+-2492.28 0.9159 N
+-2472.91 0.9202 N
+-2453.55 0.9271 N
+-2434.18 0.9463 N
+-2414.82 0.9671 N
+-2395.46 0.9982 N
+-2376.09 0.9470 N
+-2356.73 0.9062 N
+-2337.36 0.8530 N
+-2318.00 0.8173 N
+-2298.64 0.7813 N
+-2279.27 0.7383 N
+-2259.91 0.7537 N
+-2240.54 0.7575 N
+-2221.18 0.7305 N
+-2201.82 0.6470 N
+-2182.45 0.6173 N
+-2163.09 0.6359 N
+-2143.72 0.6616 N
+-2124.36 0.6118 N
+-2105.00 0.5780 N
+-2085.63 0.5630 N
+-2066.27 0.5574 N
+-2046.90 0.5346 N
+-2027.54 0.4755 N
+-2008.17 0.4505 N
+-1988.81 0.4044 N
+-1969.45 0.4235 N
+-1950.08 0.3995 N
+-1930.72 0.3849 N
+-1911.35 0.3222 N
+-1891.99 0.2616 N
+-1872.63 0.2494 N
+-1853.26 0.2410 N
+-1833.90 0.2581 N
+-1814.53 0.2526 N
+-1795.17 0.2691 N
+-1775.81 0.2701 N
+-1756.44 0.2659 N
+-1737.08 0.2691 N
+-1717.71 0.2787 N
+-1698.35 0.2738 N
+-1678.99 0.2761 N
+-1659.62 0.2836 N
+-1640.26 0.3145 N
+-1620.89 0.3444 N
+-1601.53 0.4018 N
+-1582.17 0.4021 N
+-1562.80 0.4097 N
+-1543.44 0.3685 N
+-1524.07 0.3603 N
+-1504.71 0.3090 N
+-1485.34 0.2988 N
+-1465.98 0.3094 N
+-1446.62 0.3430 N
+-1427.25 0.3648 N
+-1407.89 0.3579 N
+-1388.52 0.3321 N
+-1369.16 0.2530 N
+-1349.80 0.1911 N
+-1330.43 0.1583 N
+-1311.07 0.1655 N
+-1291.70 0.1638 N
+-1272.34 0.1714 N
+-1252.98 0.1853 N
+-1233.61 0.1924 N
+-1214.25 0.2056 N
+-1194.88 0.2254 N
+-1175.52 0.2153 N
+-1156.16 0.1715 N
+-1136.79 0.1224 N
+-1117.43 0.1075 N
+-1098.06 0.1082 N
+-1078.70 0.1124 N
+-1059.33 0.1486 N
+-1039.97 0.1667 N
+-1020.61 0.1708 N
+-1001.24 0.1417 N
+ -981.88 0.1380 N
+ -962.51 0.1645 N
+ -943.15 0.1869 N
+ -923.79 0.2187 N
+ -904.42 0.2291 N
+ -885.06 0.2496 N
+ -865.69 0.2672 N
+ -846.33 0.2677 N
+ -826.97 0.2784 N
+ -807.60 0.2671 N
+ -788.24 0.2637 N
+ -768.87 0.2694 N
+ -749.51 0.2844 N
+ -730.15 0.2854 N
+ -710.78 0.2738 N
+ -691.42 0.2543 N
+ -672.05 0.2852 N
+ -652.69 0.2939 N
+ -633.32 0.2873 N
+ -613.96 0.2829 N
+ -594.60 0.2910 N
+ -575.23 0.3108 N
+ -555.87 0.3011 N
+ -536.50 0.3149 N
+ -517.14 0.3248 N
+ -497.78 0.3216 N
+ -478.41 0.3234 N
+ -459.05 0.3263 N
+ -439.68 0.3430 N
+ -420.32 0.3483 N
+ -400.96 0.3677 N
+ -381.59 0.3604 N
+ -362.23 0.3445 N
+ -342.86 0.3524 N
+ -323.50 0.3737 N
+ -304.14 0.3817 N
+ -284.77 0.3751 N
+ -265.41 0.3710 N
+ -246.04 0.3842 N
+ -226.68 0.3849 N
+ -207.31 0.4012 N
+ -187.95 0.4127 N
+ -168.59 0.4125 N
+ -149.22 0.4011 N
+ -129.86 0.4080 N
+ -110.49 0.4377 N
+  -91.13 0.4645 N
+  -71.77 0.4644 N
+  -52.40 0.4410 N
+  -33.04 0.4217 N
+  -13.67 0.4201 N
+    5.69 0.4366 N
+   25.05 0.4585 N
+   44.42 0.4905 N
+   63.78 0.5132 N
+   83.15 0.5420 N
+  102.51 0.5698 N
+  121.87 0.6065 N
+  141.24 0.6392 N
+  160.60 0.6553 N
+  179.97 0.6658 N
+  199.33 0.6475 N
+  218.69 0.6621 N
+  238.06 0.6522 N
+  257.42 0.6946 N
+  276.79 0.7200 N
+  296.15 0.7686 N
+  315.52 0.7731 N
+  334.88 0.7797 N
+  354.24 0.7994 N
+  373.61 0.8287 N
+  392.97 0.8571 N
+  412.34 0.8285 N
+  431.70 0.8193 N
+  451.06 0.8046 N
+  470.43 0.8217 N
+  489.79 0.8352 N
+  509.16 0.8567 N
+  528.52 0.9167 N
+  547.88 0.9923 N
+  567.25  1.043 N
+  586.61  1.091 N
+  605.98  1.124 N
+  625.34  1.150 N
+  644.70  1.181 N
+  664.07  1.216 N
+  683.43  1.256 N
+  702.80  1.219 N
+  722.16  1.189 N
+  741.53  1.167 N
+  760.89  1.213 N
+  780.25  1.244 N
+  799.62  1.239 N
+  818.98  1.219 N
+  838.35  1.178 N
+  857.71  1.206 N
+  877.07  1.204 N
+  896.44  1.219 N
+  915.80  1.214 N
+  935.17  1.215 N
+  954.53  1.226 N
+  973.89  1.208 N
+  993.26  1.253 N
+ 1012.62  1.296 N
+ 1031.99  1.344 N
+ 1051.35  1.368 N
+ 1070.71  1.363 N
+ 1090.08  1.372 N
+ 1109.44  1.374 N
+ 1128.81  1.415 N
+ 1148.17  1.420 N
+ 1167.54  1.431 N
+ 1186.90  1.402 N
+ 1206.26  1.426 N
+ 1225.63  1.472 N
+ 1244.99  1.525 N
+ 1264.36  1.540 N
+ 1283.72  1.494 N
+ 1303.08  1.447 N
+ 1322.45  1.402 N
+ 1341.81  1.385 N
+ 1361.18  1.364 N
+ 1380.54  1.357 N
+ 1399.90  1.336 N
+ 1419.27  1.332 N
+ 1438.63  1.340 N
+ 1458.00  1.347 N
+ 1477.36  1.351 N
+ 1496.72  1.317 N
+ 1516.09  1.232 N
+ 1535.45  1.212 N
+ 1554.82  1.186 N
+ 1574.18  1.200 N
+ 1593.55  1.177 N
+ 1612.91  1.139 N
+ 1632.27  1.100 N
+ 1651.64  1.116 N
+ 1671.00  1.130 N
+ 1690.37  1.146 N
+ 1709.73  1.099 N
+ 1729.09  1.079 N
+ 1748.46  1.084 N
+ 1767.82  1.082 N
+ 1787.19  1.087 N
+ 1806.55  1.087 N
+ 1825.91  1.081 N
+ 1845.28  1.105 N
+ 1864.64  1.117 N
+ 1884.01  1.097 N
+ 1903.37  1.089 N
+ 1922.73  1.143 N
+ 1942.10  1.189 N
+ 1961.46  1.182 N
+ 1980.83  1.111 N
+ 2000.19  1.053 N
+ 2019.56  1.066 N
+ 2038.92  1.044 N
+ 2058.28  1.027 N
+ 2077.65 0.9789 N
+ 2097.01 0.9765 N
+ 2116.38 0.9511 N
+ 2135.74 0.9283 N
+ 2155.10 0.8875 N
+ 2174.47 0.8932 N
+ 2193.83 0.8816 N
+ 2213.20 0.8962 N
+ 2232.56 0.8934 N
+ 2251.92 0.8739 N
+ 2271.29 0.8728 N
+ 2290.65 0.9178 N
+ 2310.02 0.9199 N
+ 2329.38 0.8815 N
+ 2348.74 0.7956 N
+ 2368.11 0.7459 N
+ 2387.47 0.7130 N
+ 2406.84 0.7130 N
+ 2426.20 0.7260 N
+ 2445.56 0.7481 N
+ 2464.93 0.7391 N
+ 2484.29 0.7446 N
+ 2503.66 0.7578 N
+ 2523.02 0.7667 N
+ 2542.39 0.7779 N
+ 2561.75 0.7797 N
+ 2581.11 0.8015 N
+ 2600.48 0.8278 N
+ 2619.84 0.8825 N
+ 2639.21 0.9271 N
+ 2658.57 0.9774 N
+ 2677.93 0.9711 N
+ 2697.30 0.9547 N
+ 2716.66 0.9137 N
+ 2736.03 0.8768 N
+ 2755.39 0.8633 N
+ 2774.75 0.8275 N
+ 2794.12 0.7875 N
+ 2813.48 0.7228 N
+ 2832.85 0.6970 N
+ 2852.21 0.6982 N
+ 2871.57 0.7050 N
+ 2890.94 0.7144 N
+ 2910.30 0.7282 N
+ 2929.67 0.7384 N
+ 2949.03 0.7584 N
+ 2968.40 0.7786 N
+ 2987.76 0.7932 N
+ 3007.12 0.7924 N
+ 3026.49 0.7788 N
+ 3045.85 0.8193 N
+ 3065.22 0.8532 N
+ 3084.58 0.8567 N
+ 3103.94 0.8157 N
+ 3123.31 0.7772 N
+ 3142.67 0.7844 N
+ 3162.04 0.7939 N
+ 3181.40 0.8309 N
+ 3200.76 0.8345 N
+ 3220.13 0.8676 N
+ 3239.49 0.8855 N
+ 3258.86 0.9427 N
+ 3278.22 0.9926 N
+ 3297.58  1.031 N
+ 3316.95  1.048 N
+ 3336.31  1.091 N
+ 3355.68  1.103 N
+ 3375.04  1.060 N
+ 3394.41 0.9999 N
+ 3413.77  1.010 N
+ 3433.13  1.033 N
+ 3452.50  1.012 N
+ 3471.86 0.9373 N
+ 3491.23 0.8683 N
+ 3510.59 0.8147 N
+ 3529.95 0.7490 N
+ 3549.32 0.7267 N
+ 3568.68 0.7317 N
+ 3588.05 0.7708 N
+ 3607.41 0.7580 N
+ 3626.77 0.7481 N
+ 3646.14 0.7533 N
+ 3665.50 0.8371 N
+ 3684.87 0.8938 N
+ 3704.23 0.9348 N
+ 3723.59 0.9332 N
+ 3742.96 0.9254 N
+ 3762.32 0.9218 N
+ 3781.69 0.9223 N
+ 3801.05 0.9055 N
+ 3820.42 0.8671 N
+ 3839.78 0.8101 N
+ 3859.14 0.7862 N
+ 3878.51 0.7563 N
+ 3897.87 0.7292 N
+ 3917.24 0.6814 N
+ 3936.60 0.6446 N
+ 3955.96 0.6250 N
+ 3975.33 0.6290 N
+ 3994.69 0.6682 N
+ 4014.06 0.6904 N
+enddata
+-4002.68  1.039 F
+-3983.31  1.057 N
+-3963.95  1.061 N
+-3944.58  1.090 N
+-3925.22  1.117 N
+-3905.86  1.139 N
+-3886.49  1.115 N
+-3867.13  1.104 N
+-3847.76  1.112 N
+-3828.40  1.140 N
+-3809.03  1.172 N
+-3789.67  1.210 N
+-3770.31  1.246 N
+-3750.94  1.252 N
+-3731.58  1.283 N
+-3712.21  1.319 N
+-3692.85  1.367 N
+-3673.49  1.365 N
+-3654.12  1.351 N
+-3634.76  1.334 N
+-3615.39  1.336 N
+-3596.03  1.322 N
+-3576.67  1.307 N
+-3557.30  1.285 N
+-3537.94  1.215 N
+-3518.57  1.114 N
+-3499.21  1.051 N
+-3479.85 0.9999 N
+-3460.48 0.9701 N
+-3441.12 0.9287 N
+-3421.75 0.9126 N
+-3402.39 0.9269 N
+-3383.03 0.9412 N
+-3363.66 0.9820 N
+-3344.30  1.003 N
+-3324.93  1.017 N
+-3305.57  1.035 N
+-3286.20  1.053 N
+-3266.84  1.036 N
+-3247.48  1.013 N
+-3228.11 0.9937 N
+-3208.75 0.9656 N
+-3189.38 0.9339 N
+-3170.02 0.8939 N
+-3150.66 0.8845 N
+-3131.29 0.8837 N
+-3111.93 0.8886 N
+-3092.56 0.8870 N
+-3073.20 0.8534 N
+-3053.84 0.7874 N
+-3034.47 0.7466 N
+-3015.11 0.7180 N
+-2995.74 0.7050 N
+-2976.38 0.6719 N
+-2957.02 0.6408 N
+-2937.65 0.6226 N
+-2918.29 0.6037 N
+-2898.92 0.6079 N
+-2879.56 0.6023 N
+-2860.19 0.6192 N
+-2840.83 0.6479 N
+-2821.47 0.6799 N
+-2802.10 0.6990 N
+-2782.74 0.6901 N
+-2763.37 0.6887 N
+-2744.01 0.7091 N
+-2724.65 0.7233 N
+-2705.28 0.7354 N
+-2685.92 0.7333 N
+-2666.55 0.7643 N
+-2647.19 0.8043 N
+-2627.83 0.8300 N
+-2608.46 0.8373 N
+-2589.10 0.8415 N
+-2569.73 0.8758 N
+-2550.37 0.9041 N
+-2531.01 0.9345 N
+-2511.64 0.9373 N
+-2492.28 0.9679 N
+-2472.91 0.9966 N
+-2453.55  1.016 N
+-2434.18 0.9927 N
+-2414.82 0.9456 N
+-2395.46 0.9364 N
+-2376.09 0.9287 N
+-2356.73 0.9345 N
+-2337.36 0.8913 N
+-2318.00 0.8585 N
+-2298.64 0.8196 N
+-2279.27 0.7873 N
+-2259.91 0.7596 N
+-2240.54 0.7380 N
+-2221.18 0.7273 N
+-2201.82 0.7137 N
+-2182.45 0.6815 N
+-2163.09 0.6426 N
+-2143.72 0.5917 N
+-2124.36 0.5500 N
+-2105.00 0.5144 N
+-2085.63 0.4899 N
+-2066.27 0.4758 N
+-2046.90 0.4696 N
+-2027.54 0.4552 N
+-2008.17 0.4458 N
+-1988.81 0.4145 N
+-1969.45 0.4051 N
+-1950.08 0.3803 N
+-1930.72 0.3574 N
+-1911.35 0.2997 N
+-1891.99 0.2694 N
+-1872.63 0.2871 N
+-1853.26 0.3176 N
+-1833.90 0.3157 N
+-1814.53 0.2940 N
+-1795.17 0.2710 N
+-1775.81 0.2596 N
+-1756.44 0.2521 N
+-1737.08 0.2544 N
+-1717.71 0.2602 N
+-1698.35 0.2650 N
+-1678.99 0.2861 N
+-1659.62 0.3112 N
+-1640.26 0.3290 N
+-1620.89 0.3330 N
+-1601.53 0.3426 N
+-1582.17 0.3497 N
+-1562.80 0.3427 N
+-1543.44 0.3385 N
+-1524.07 0.3257 N
+-1504.71 0.3226 N
+-1485.34 0.3228 N
+-1465.98 0.3417 N
+-1446.62 0.3689 N
+-1427.25 0.3616 N
+-1407.89 0.3235 N
+-1388.52 0.2594 N
+-1369.16 0.2134 N
+-1349.80 0.1734 N
+-1330.43 0.1561 N
+-1311.07 0.1433 N
+-1291.70 0.1536 N
+-1272.34 0.1700 N
+-1252.98 0.1972 N
+-1233.61 0.2018 N
+-1214.25 0.1929 N
+-1194.88 0.1839 N
+-1175.52 0.1636 N
+-1156.16 0.1360 N
+-1136.79 0.1006 N
+-1117.43 0.1018 N
+-1098.06 0.1103 N
+-1078.70 0.1199 N
+-1059.33 0.1355 N
+-1039.97 0.1559 N
+-1020.61 0.1748 N
+-1001.24 0.1712 N
+ -981.88 0.1471 N
+ -962.51 0.1494 N
+ -943.15 0.1764 N
+ -923.79 0.2142 N
+ -904.42 0.2306 N
+ -885.06 0.2254 N
+ -865.69 0.2278 N
+ -846.33 0.2215 N
+ -826.97 0.2210 N
+ -807.60 0.2418 N
+ -788.24 0.2429 N
+ -768.87 0.2570 N
+ -749.51 0.2696 N
+ -730.15 0.3019 N
+ -710.78 0.3035 N
+ -691.42 0.2726 N
+ -672.05 0.2606 N
+ -652.69 0.2634 N
+ -633.32 0.2643 N
+ -613.96 0.2625 N
+ -594.60 0.2681 N
+ -575.23 0.2746 N
+ -555.87 0.2850 N
+ -536.50 0.2836 N
+ -517.14 0.3063 N
+ -497.78 0.3024 N
+ -478.41 0.3092 N
+ -459.05 0.3170 N
+ -439.68 0.3149 N
+ -420.32 0.3160 N
+ -400.96 0.3186 N
+ -381.59 0.3302 N
+ -362.23 0.3345 N
+ -342.86 0.3440 N
+ -323.50 0.3450 N
+ -304.14 0.3440 N
+ -284.77 0.3244 N
+ -265.41 0.3269 N
+ -246.04 0.3530 N
+ -226.68 0.3807 N
+ -207.31 0.3924 N
+ -187.95 0.3969 N
+ -168.59 0.3994 N
+ -149.22 0.4133 N
+ -129.86 0.4260 N
+ -110.49 0.4396 N
+  -91.13 0.4503 N
+  -71.77 0.4283 N
+  -52.40 0.3868 N
+  -33.04 0.3643 N
+  -13.67 0.3540 N
+    5.69 0.3802 N
+   25.05 0.4069 N
+   44.42 0.4624 N
+   63.78 0.4935 N
+   83.15 0.5140 N
+  102.51 0.5355 N
+  121.87 0.5549 N
+  141.24 0.5659 N
+  160.60 0.5859 N
+  179.97 0.6136 N
+  199.33 0.6252 N
+  218.69 0.6257 N
+  238.06 0.6301 N
+  257.42 0.6555 N
+  276.79 0.6674 N
+  296.15 0.6998 N
+  315.52 0.7382 N
+  334.88 0.7938 N
+  354.24 0.8265 N
+  373.61 0.8382 N
+  392.97 0.8305 N
+  412.34 0.8096 N
+  431.70 0.8072 N
+  451.06 0.8032 N
+  470.43 0.8042 N
+  489.79 0.8148 N
+  509.16 0.8186 N
+  528.52 0.8652 N
+  547.88 0.9329 N
+  567.25  1.025 N
+  586.61  1.071 N
+  605.98  1.098 N
+  625.34  1.139 N
+  644.70  1.203 N
+  664.07  1.252 N
+  683.43  1.273 N
+  702.80  1.276 N
+  722.16  1.310 N
+  741.53  1.324 N
+  760.89  1.304 N
+  780.25  1.250 N
+  799.62  1.224 N
+  818.98  1.200 N
+  838.35  1.193 N
+  857.71  1.152 N
+  877.07  1.156 N
+  896.44  1.149 N
+  915.80  1.162 N
+  935.17  1.177 N
+  954.53  1.192 N
+  973.89  1.220 N
+  993.26  1.240 N
+ 1012.62  1.218 N
+ 1031.99  1.201 N
+ 1051.35  1.222 N
+ 1070.71  1.308 N
+ 1090.08  1.343 N
+ 1109.44  1.351 N
+ 1128.81  1.357 N
+ 1148.17  1.410 N
+ 1167.54  1.421 N
+ 1186.90  1.413 N
+ 1206.26  1.431 N
+ 1225.63  1.478 N
+ 1244.99  1.481 N
+ 1264.36  1.429 N
+ 1283.72  1.360 N
+ 1303.08  1.328 N
+ 1322.45  1.341 N
+ 1341.81  1.387 N
+ 1361.18  1.426 N
+ 1380.54  1.375 N
+ 1399.90  1.324 N
+ 1419.27  1.274 N
+ 1438.63  1.323 N
+ 1458.00  1.311 N
+ 1477.36  1.306 N
+ 1496.72  1.266 N
+ 1516.09  1.223 N
+ 1535.45  1.211 N
+ 1554.82  1.191 N
+ 1574.18  1.196 N
+ 1593.55  1.185 N
+ 1612.91  1.169 N
+ 1632.27  1.184 N
+ 1651.64  1.189 N
+ 1671.00  1.216 N
+ 1690.37  1.225 N
+ 1709.73  1.202 N
+ 1729.09  1.139 N
+ 1748.46  1.111 N
+ 1767.82  1.113 N
+ 1787.19  1.117 N
+ 1806.55  1.109 N
+ 1825.91  1.118 N
+ 1845.28  1.118 N
+ 1864.64  1.110 N
+ 1884.01  1.137 N
+ 1903.37  1.160 N
+ 1922.73  1.209 N
+ 1942.10  1.190 N
+ 1961.46  1.219 N
+ 1980.83  1.204 N
+ 2000.19  1.153 N
+ 2019.56  1.099 N
+ 2038.92  1.063 N
+ 2058.28  1.043 N
+ 2077.65  1.007 N
+ 2097.01 0.9750 N
+ 2116.38 0.9454 N
+ 2135.74 0.9211 N
+ 2155.10 0.8415 N
+ 2174.47 0.8296 N
+ 2193.83 0.8533 N
+ 2213.20 0.9221 N
+ 2232.56 0.9713 N
+ 2251.92 0.9740 N
+ 2271.29 0.9654 N
+ 2290.65 0.9449 N
+ 2310.02 0.9198 N
+ 2329.38 0.8642 N
+ 2348.74 0.7817 N
+ 2368.11 0.7301 N
+ 2387.47 0.6989 N
+ 2406.84 0.7098 N
+ 2426.20 0.7065 N
+ 2445.56 0.7341 N
+ 2464.93 0.7415 N
+ 2484.29 0.7452 N
+ 2503.66 0.7314 N
+ 2523.02 0.7318 N
+ 2542.39 0.7488 N
+ 2561.75 0.8016 N
+ 2581.11 0.8264 N
+ 2600.48 0.8533 N
+ 2619.84 0.8455 N
+ 2639.21 0.8637 N
+ 2658.57 0.9053 N
+ 2677.93 0.9297 N
+ 2697.30 0.9520 N
+ 2716.66 0.9351 N
+ 2736.03 0.8894 N
+ 2755.39 0.8379 N
+ 2774.75 0.7907 N
+ 2794.12 0.7700 N
+ 2813.48 0.7344 N
+ 2832.85 0.6811 N
+ 2852.21 0.6595 N
+ 2871.57 0.6500 N
+ 2890.94 0.6695 N
+ 2910.30 0.6768 N
+ 2929.67 0.6892 N
+ 2949.03 0.7059 N
+ 2968.40 0.7306 N
+ 2987.76 0.7493 N
+ 3007.12 0.7654 N
+ 3026.49 0.7791 N
+ 3045.85 0.7874 N
+ 3065.22 0.7813 N
+ 3084.58 0.7715 N
+ 3103.94 0.7959 N
+ 3123.31 0.8164 N
+ 3142.67 0.8341 N
+ 3162.04 0.8088 N
+ 3181.40 0.8045 N
+ 3200.76 0.7998 N
+ 3220.13 0.8275 N
+ 3239.49 0.8419 N
+ 3258.86 0.8500 N
+ 3278.22 0.8684 N
+ 3297.58 0.8888 N
+ 3316.95 0.9417 N
+ 3336.31 0.9882 N
+ 3355.68  1.019 N
+ 3375.04  1.043 N
+ 3394.41  1.033 N
+ 3413.77  1.051 N
+ 3433.13  1.044 N
+ 3452.50  1.034 N
+ 3471.86 0.9986 N
+ 3491.23 0.9659 N
+ 3510.59 0.9191 N
+ 3529.95 0.8510 N
+ 3549.32 0.7941 N
+ 3568.68 0.7877 N
+ 3588.05 0.7954 N
+ 3607.41 0.7624 N
+ 3626.77 0.7263 N
+ 3646.14 0.7457 N
+ 3665.50 0.8087 N
+ 3684.87 0.8540 N
+ 3704.23 0.8661 N
+ 3723.59 0.8973 N
+ 3742.96 0.9475 N
+ 3762.32 0.9792 N
+ 3781.69 0.9943 N
+ 3801.05 0.9779 N
+ 3820.42 0.9674 N
+ 3839.78 0.9084 N
+ 3859.14 0.8302 N
+ 3878.51 0.7251 N
+ 3897.87 0.6669 N
+ 3917.24 0.6562 N
+ 3936.60 0.6748 N
+ 3955.96 0.6673 N
+ 3975.33 0.6580 N
+ 3994.69 0.6686 N
+ 4014.06 0.6903 N
+enddata
+-4002.68  1.064 F
+-3983.31  1.098 N
+-3963.95  1.120 N
+-3944.58  1.130 N
+-3925.22  1.118 N
+-3905.86  1.128 N
+-3886.49  1.132 N
+-3867.13  1.135 N
+-3847.76  1.145 N
+-3828.40  1.166 N
+-3809.03  1.181 N
+-3789.67  1.183 N
+-3770.31  1.191 N
+-3750.94  1.192 N
+-3731.58  1.247 N
+-3712.21  1.300 N
+-3692.85  1.357 N
+-3673.49  1.348 N
+-3654.12  1.339 N
+-3634.76  1.341 N
+-3615.39  1.351 N
+-3596.03  1.368 N
+-3576.67  1.340 N
+-3557.30  1.281 N
+-3537.94  1.216 N
+-3518.57  1.149 N
+-3499.21  1.092 N
+-3479.85  1.008 N
+-3460.48 0.9453 N
+-3441.12 0.9205 N
+-3421.75 0.9329 N
+-3402.39 0.9496 N
+-3383.03 0.9380 N
+-3363.66 0.9325 N
+-3344.30 0.9506 N
+-3324.93 0.9736 N
+-3305.57  1.022 N
+-3286.20  1.058 N
+-3266.84  1.088 N
+-3247.48  1.074 N
+-3228.11  1.028 N
+-3208.75 0.9862 N
+-3189.38 0.9141 N
+-3170.02 0.8705 N
+-3150.66 0.8522 N
+-3131.29 0.8430 N
+-3111.93 0.8679 N
+-3092.56 0.8569 N
+-3073.20 0.8449 N
+-3053.84 0.7898 N
+-3034.47 0.7473 N
+-3015.11 0.7557 N
+-2995.74 0.7477 N
+-2976.38 0.7331 N
+-2957.02 0.6741 N
+-2937.65 0.6511 N
+-2918.29 0.6387 N
+-2898.92 0.6675 N
+-2879.56 0.6728 N
+-2860.19 0.6684 N
+-2840.83 0.6557 N
+-2821.47 0.6548 N
+-2802.10 0.6587 N
+-2782.74 0.6615 N
+-2763.37 0.6896 N
+-2744.01 0.7315 N
+-2724.65 0.7205 N
+-2705.28 0.6784 N
+-2685.92 0.6699 N
+-2666.55 0.7169 N
+-2647.19 0.8027 N
+-2627.83 0.8281 N
+-2608.46 0.8356 N
+-2589.10 0.8450 N
+-2569.73 0.8886 N
+-2550.37 0.8922 N
+-2531.01 0.8561 N
+-2511.64 0.8398 N
+-2492.28 0.9043 N
+-2472.91 0.9473 N
+-2453.55 0.9282 N
+-2434.18 0.8658 N
+-2414.82 0.8572 N
+-2395.46 0.8957 N
+-2376.09 0.9273 N
+-2356.73 0.9002 N
+-2337.36 0.8375 N
+-2318.00 0.7975 N
+-2298.64 0.7628 N
+-2279.27 0.7456 N
+-2259.91 0.6900 N
+-2240.54 0.6659 N
+-2221.18 0.6408 N
+-2201.82 0.6468 N
+-2182.45 0.6441 N
+-2163.09 0.6468 N
+-2143.72 0.6261 N
+-2124.36 0.5894 N
+-2105.00 0.5320 N
+-2085.63 0.4910 N
+-2066.27 0.4715 N
+-2046.90 0.4525 N
+-2027.54 0.4343 N
+-2008.17 0.4218 N
+-1988.81 0.4155 N
+-1969.45 0.3837 N
+-1950.08 0.3608 N
+-1930.72 0.3098 N
+-1911.35 0.2930 N
+-1891.99 0.2662 N
+-1872.63 0.2813 N
+-1853.26 0.2376 N
+-1833.90 0.2213 N
+-1814.53 0.2112 N
+-1795.17 0.2370 N
+-1775.81 0.2409 N
+-1756.44 0.2615 N
+-1737.08 0.2980 N
+-1717.71 0.3533 N
+-1698.35 0.3573 N
+-1678.99 0.3583 N
+-1659.62 0.3358 N
+-1640.26 0.3352 N
+-1620.89 0.3410 N
+-1601.53 0.3777 N
+-1582.17 0.3856 N
+-1562.80 0.3949 N
+-1543.44 0.4041 N
+-1524.07 0.4116 N
+-1504.71 0.3891 N
+-1485.34 0.3504 N
+-1465.98 0.3543 N
+-1446.62 0.3799 N
+-1427.25 0.3629 N
+-1407.89 0.3490 N
+-1388.52 0.2999 N
+-1369.16 0.2451 N
+-1349.80 0.2263 N
+-1330.43 0.1958 N
+-1311.07 0.2208 N
+-1291.70 0.1901 N
+-1272.34 0.2222 N
+-1252.98 0.2302 N
+-1233.61 0.2434 N
+-1214.25 0.2368 N
+-1194.88 0.2449 N
+-1175.52 0.2104 N
+-1156.16 0.1815 N
+-1136.79 0.1374 N
+-1117.43 0.1327 N
+-1098.06 0.1743 N
+-1078.70 0.2055 N
+-1059.33 0.2718 N
+-1039.97 0.2601 N
+-1020.61 0.2391 N
+-1001.24 0.1766 N
+ -981.88 0.1716 N
+ -962.51 0.2031 N
+ -943.15 0.2460 N
+ -923.79 0.2580 N
+ -904.42 0.2615 N
+ -885.06 0.2564 N
+ -865.69 0.2801 N
+ -846.33 0.2715 N
+ -826.97 0.2818 N
+ -807.60 0.2608 N
+ -788.24 0.2883 N
+ -768.87 0.3095 N
+ -749.51 0.3372 N
+ -730.15 0.3311 N
+ -710.78 0.3138 N
+ -691.42 0.2923 N
+ -672.05 0.3194 N
+ -652.69 0.3314 N
+ -633.32 0.3364 N
+ -613.96 0.3163 N
+ -594.60 0.3142 N
+ -575.23 0.3285 N
+ -555.87 0.3145 N
+ -536.50 0.3080 N
+ -517.14 0.3019 N
+ -497.78 0.2927 N
+ -478.41 0.2946 N
+ -459.05 0.2959 N
+ -439.68 0.3204 N
+ -420.32 0.3184 N
+ -400.96 0.3215 N
+ -381.59 0.3222 N
+ -362.23 0.3496 N
+ -342.86 0.3752 N
+ -323.50 0.3889 N
+ -304.14 0.3832 N
+ -284.77 0.3843 N
+ -265.41 0.3808 N
+ -246.04 0.3708 N
+ -226.68 0.3281 N
+ -207.31 0.3428 N
+ -187.95 0.3674 N
+ -168.59 0.4175 N
+ -149.22 0.4270 N
+ -129.86 0.4393 N
+ -110.49 0.4397 N
+  -91.13 0.4347 N
+  -71.77 0.4243 N
+  -52.40 0.3855 N
+  -33.04 0.3585 N
+  -13.67 0.3285 N
+    5.69 0.3503 N
+   25.05 0.3859 N
+   44.42 0.4552 N
+   63.78 0.5124 N
+   83.15 0.5445 N
+  102.51 0.5445 N
+  121.87 0.5420 N
+  141.24 0.5634 N
+  160.60 0.6114 N
+  179.97 0.6638 N
+  199.33 0.6862 N
+  218.69 0.6809 N
+  238.06 0.6709 N
+  257.42 0.6941 N
+  276.79 0.6978 N
+  296.15 0.7206 N
+  315.52 0.7326 N
+  334.88 0.7708 N
+  354.24 0.7949 N
+  373.61 0.7990 N
+  392.97 0.7965 N
+  412.34 0.7855 N
+  431.70 0.7699 N
+  451.06 0.7794 N
+  470.43 0.8055 N
+  489.79 0.8384 N
+  509.16 0.8769 N
+  528.52 0.9331 N
+  547.88 0.9898 N
+  567.25  1.023 N
+  586.61  1.054 N
+  605.98  1.058 N
+  625.34  1.067 N
+  644.70  1.047 N
+  664.07  1.078 N
+  683.43  1.139 N
+  702.80  1.192 N
+  722.16  1.253 N
+  741.53  1.256 N
+  760.89  1.255 N
+  780.25  1.199 N
+  799.62  1.171 N
+  818.98  1.174 N
+  838.35  1.202 N
+  857.71  1.211 N
+  877.07  1.191 N
+  896.44  1.199 N
+  915.80  1.213 N
+  935.17  1.208 N
+  954.53  1.197 N
+  973.89  1.190 N
+  993.26  1.198 N
+ 1012.62  1.180 N
+ 1031.99  1.196 N
+ 1051.35  1.229 N
+ 1070.71  1.249 N
+ 1090.08  1.277 N
+ 1109.44  1.336 N
+ 1128.81  1.391 N
+ 1148.17  1.419 N
+ 1167.54  1.427 N
+ 1186.90  1.413 N
+ 1206.26  1.461 N
+ 1225.63  1.477 N
+ 1244.99  1.495 N
+ 1264.36  1.431 N
+ 1283.72  1.371 N
+ 1303.08  1.337 N
+ 1322.45  1.330 N
+ 1341.81  1.300 N
+ 1361.18  1.261 N
+ 1380.54  1.224 N
+ 1399.90  1.241 N
+ 1419.27  1.299 N
+ 1438.63  1.361 N
+ 1458.00  1.366 N
+ 1477.36  1.325 N
+ 1496.72  1.257 N
+ 1516.09  1.210 N
+ 1535.45  1.172 N
+ 1554.82  1.143 N
+ 1574.18  1.116 N
+ 1593.55  1.115 N
+ 1612.91  1.076 N
+ 1632.27  1.064 N
+ 1651.64  1.082 N
+ 1671.00  1.113 N
+ 1690.37  1.179 N
+ 1709.73  1.250 N
+ 1729.09  1.252 N
+ 1748.46  1.207 N
+ 1767.82  1.117 N
+ 1787.19  1.120 N
+ 1806.55  1.079 N
+ 1825.91  1.027 N
+ 1845.28 0.9944 N
+ 1864.64  1.027 N
+ 1884.01  1.030 N
+ 1903.37  1.035 N
+ 1922.73  1.024 N
+ 1942.10  1.086 N
+ 1961.46  1.156 N
+ 1980.83  1.228 N
+ 2000.19  1.213 N
+ 2019.56  1.196 N
+ 2038.92  1.144 N
+ 2058.28  1.132 N
+ 2077.65  1.040 N
+ 2097.01 0.9959 N
+ 2116.38 0.9750 N
+ 2135.74 0.9776 N
+ 2155.10 0.9385 N
+ 2174.47 0.9097 N
+ 2193.83 0.9202 N
+ 2213.20 0.9660 N
+ 2232.56  1.017 N
+ 2251.92  1.072 N
+ 2271.29  1.086 N
+ 2290.65  1.054 N
+ 2310.02 0.9809 N
+ 2329.38 0.8864 N
+ 2348.74 0.8554 N
+ 2368.11 0.8071 N
+ 2387.47 0.8389 N
+ 2406.84 0.7900 N
+ 2426.20 0.8006 N
+ 2445.56 0.7797 N
+ 2464.93 0.7790 N
+ 2484.29 0.7592 N
+ 2503.66 0.7601 N
+ 2523.02 0.7619 N
+ 2542.39 0.7790 N
+ 2561.75 0.7989 N
+ 2581.11 0.8261 N
+ 2600.48 0.8302 N
+ 2619.84 0.8340 N
+ 2639.21 0.8679 N
+ 2658.57 0.9147 N
+ 2677.93 0.9375 N
+ 2697.30 0.9425 N
+ 2716.66 0.9271 N
+ 2736.03 0.9200 N
+ 2755.39 0.9151 N
+ 2774.75 0.8922 N
+ 2794.12 0.8822 N
+ 2813.48 0.8358 N
+ 2832.85 0.7979 N
+ 2852.21 0.7171 N
+ 2871.57 0.6928 N
+ 2890.94 0.6821 N
+ 2910.30 0.7110 N
+ 2929.67 0.7114 N
+ 2949.03 0.7218 N
+ 2968.40 0.7216 N
+ 2987.76 0.7235 N
+ 3007.12 0.7293 N
+ 3026.49 0.7606 N
+ 3045.85 0.8326 N
+ 3065.22 0.8414 N
+ 3084.58 0.8254 N
+ 3103.94 0.7884 N
+ 3123.31 0.8109 N
+ 3142.67 0.8223 N
+ 3162.04 0.8410 N
+ 3181.40 0.8406 N
+ 3200.76 0.8323 N
+ 3220.13 0.8326 N
+ 3239.49 0.8481 N
+ 3258.86 0.8708 N
+ 3278.22 0.8796 N
+ 3297.58 0.9371 N
+ 3316.95 0.9971 N
+ 3336.31  1.049 N
+ 3355.68  1.071 N
+ 3375.04  1.075 N
+ 3394.41  1.066 N
+ 3413.77  1.027 N
+ 3433.13  1.014 N
+ 3452.50 0.9846 N
+ 3471.86  1.011 N
+ 3491.23 0.9957 N
+ 3510.59 0.9910 N
+ 3529.95 0.9043 N
+ 3549.32 0.8326 N
+ 3568.68 0.7844 N
+ 3588.05 0.7769 N
+ 3607.41 0.7782 N
+ 3626.77 0.7681 N
+ 3646.14 0.7497 N
+ 3665.50 0.7895 N
+ 3684.87 0.8230 N
+ 3704.23 0.8657 N
+ 3723.59 0.8679 N
+ 3742.96 0.9116 N
+ 3762.32 0.9320 N
+ 3781.69 0.9605 N
+ 3801.05 0.9311 N
+ 3820.42 0.9452 N
+ 3839.78 0.9109 N
+ 3859.14 0.8710 N
+ 3878.51 0.8066 N
+ 3897.87 0.7666 N
+ 3917.24 0.7300 N
+ 3936.60 0.6866 N
+ 3955.96 0.6380 N
+ 3975.33 0.6310 N
+ 3994.69 0.6469 N
+ 4014.06 0.6695 N
+enddata
+-4002.68  1.031 F
+-3983.31  1.062 N
+-3963.95  1.076 N
+-3944.58  1.094 N
+-3925.22  1.097 N
+-3905.86  1.133 N
+-3886.49  1.143 N
+-3867.13  1.154 N
+-3847.76  1.148 N
+-3828.40  1.107 N
+-3809.03  1.086 N
+-3789.67  1.066 N
+-3770.31  1.135 N
+-3750.94  1.192 N
+-3731.58  1.294 N
+-3712.21  1.349 N
+-3692.85  1.391 N
+-3673.49  1.377 N
+-3654.12  1.330 N
+-3634.76  1.329 N
+-3615.39  1.330 N
+-3596.03  1.354 N
+-3576.67  1.334 N
+-3557.30  1.337 N
+-3537.94  1.300 N
+-3518.57  1.242 N
+-3499.21  1.197 N
+-3479.85  1.131 N
+-3460.48  1.081 N
+-3441.12  1.003 N
+-3421.75 0.9728 N
+-3402.39 0.9241 N
+-3383.03 0.8932 N
+-3363.66 0.8998 N
+-3344.30 0.9194 N
+-3324.93 0.9486 N
+-3305.57 0.9608 N
+-3286.20 0.9956 N
+-3266.84  1.024 N
+-3247.48  1.041 N
+-3228.11  1.081 N
+-3208.75  1.045 N
+-3189.38  1.013 N
+-3170.02 0.9309 N
+-3150.66 0.9040 N
+-3131.29 0.8912 N
+-3111.93 0.8838 N
+-3092.56 0.8841 N
+-3073.20 0.8697 N
+-3053.84 0.8819 N
+-3034.47 0.8796 N
+-3015.11 0.8618 N
+-2995.74 0.8236 N
+-2976.38 0.7953 N
+-2957.02 0.7521 N
+-2937.65 0.7017 N
+-2918.29 0.6600 N
+-2898.92 0.6365 N
+-2879.56 0.6203 N
+-2860.19 0.6098 N
+-2840.83 0.6122 N
+-2821.47 0.6259 N
+-2802.10 0.6443 N
+-2782.74 0.6688 N
+-2763.37 0.6935 N
+-2744.01 0.7142 N
+-2724.65 0.7121 N
+-2705.28 0.7090 N
+-2685.92 0.7122 N
+-2666.55 0.7333 N
+-2647.19 0.7526 N
+-2627.83 0.7642 N
+-2608.46 0.7691 N
+-2589.10 0.7858 N
+-2569.73 0.8083 N
+-2550.37 0.8519 N
+-2531.01 0.8842 N
+-2511.64 0.8909 N
+-2492.28 0.9250 N
+-2472.91 0.9518 N
+-2453.55 0.9804 N
+-2434.18 0.9610 N
+-2414.82 0.9401 N
+-2395.46 0.9425 N
+-2376.09 0.9358 N
+-2356.73 0.9149 N
+-2337.36 0.8731 N
+-2318.00 0.8635 N
+-2298.64 0.8638 N
+-2279.27 0.8702 N
+-2259.91 0.8380 N
+-2240.54 0.7977 N
+-2221.18 0.7649 N
+-2201.82 0.7320 N
+-2182.45 0.7098 N
+-2163.09 0.6869 N
+-2143.72 0.6671 N
+-2124.36 0.6283 N
+-2105.00 0.5584 N
+-2085.63 0.5057 N
+-2066.27 0.4778 N
+-2046.90 0.4778 N
+-2027.54 0.4694 N
+-2008.17 0.4279 N
+-1988.81 0.3710 N
+-1969.45 0.3262 N
+-1950.08 0.3407 N
+-1930.72 0.3329 N
+-1911.35 0.2985 N
+-1891.99 0.2555 N
+-1872.63 0.2553 N
+-1853.26 0.2707 N
+-1833.90 0.2599 N
+-1814.53 0.2578 N
+-1795.17 0.2587 N
+-1775.81 0.2572 N
+-1756.44 0.2680 N
+-1737.08 0.2921 N
+-1717.71 0.3318 N
+-1698.35 0.3301 N
+-1678.99 0.3193 N
+-1659.62 0.3098 N
+-1640.26 0.3307 N
+-1620.89 0.3533 N
+-1601.53 0.3459 N
+-1582.17 0.3212 N
+-1562.80 0.3123 N
+-1543.44 0.3066 N
+-1524.07 0.3329 N
+-1504.71 0.3580 N
+-1485.34 0.4001 N
+-1465.98 0.4279 N
+-1446.62 0.4224 N
+-1427.25 0.3737 N
+-1407.89 0.3072 N
+-1388.52 0.2579 N
+-1369.16 0.2369 N
+-1349.80 0.2118 N
+-1330.43 0.1787 N
+-1311.07 0.1637 N
+-1291.70 0.1819 N
+-1272.34 0.1952 N
+-1252.98 0.2005 N
+-1233.61 0.1768 N
+-1214.25 0.1543 N
+-1194.88 0.1462 N
+-1175.52 0.1131 N
+-1156.16 0.9877E-01 N
+-1136.79 0.9068E-01 N
+-1117.43 0.1175 N
+-1098.06 0.1338 N
+-1078.70 0.1587 N
+-1059.33 0.1830 N
+-1039.97 0.1999 N
+-1020.61 0.1905 N
+-1001.24 0.1742 N
+ -981.88 0.1785 N
+ -962.51 0.1863 N
+ -943.15 0.2120 N
+ -923.79 0.2358 N
+ -904.42 0.2489 N
+ -885.06 0.2583 N
+ -865.69 0.2704 N
+ -846.33 0.3010 N
+ -826.97 0.3078 N
+ -807.60 0.2977 N
+ -788.24 0.2675 N
+ -768.87 0.2578 N
+ -749.51 0.2679 N
+ -730.15 0.2627 N
+ -710.78 0.2645 N
+ -691.42 0.2516 N
+ -672.05 0.2641 N
+ -652.69 0.2701 N
+ -633.32 0.2623 N
+ -613.96 0.2610 N
+ -594.60 0.2584 N
+ -575.23 0.2772 N
+ -555.87 0.2839 N
+ -536.50 0.2823 N
+ -517.14 0.2795 N
+ -497.78 0.2727 N
+ -478.41 0.2718 N
+ -459.05 0.2776 N
+ -439.68 0.2842 N
+ -420.32 0.2911 N
+ -400.96 0.3036 N
+ -381.59 0.3183 N
+ -362.23 0.3298 N
+ -342.86 0.3320 N
+ -323.50 0.3455 N
+ -304.14 0.3483 N
+ -284.77 0.3584 N
+ -265.41 0.3706 N
+ -246.04 0.3669 N
+ -226.68 0.3460 N
+ -207.31 0.3168 N
+ -187.95 0.3304 N
+ -168.59 0.3493 N
+ -149.22 0.3666 N
+ -129.86 0.3865 N
+ -110.49 0.4141 N
+  -91.13 0.4315 N
+  -71.77 0.4235 N
+  -52.40 0.3805 N
+  -33.04 0.3751 N
+  -13.67 0.3740 N
+    5.69 0.4290 N
+   25.05 0.4558 N
+   44.42 0.4890 N
+   63.78 0.4978 N
+   83.15 0.5135 N
+  102.51 0.5593 N
+  121.87 0.5928 N
+  141.24 0.6272 N
+  160.60 0.6403 N
+  179.97 0.6678 N
+  199.33 0.6822 N
+  218.69 0.6746 N
+  238.06 0.6515 N
+  257.42 0.6696 N
+  276.79 0.6850 N
+  296.15 0.7253 N
+  315.52 0.7514 N
+  334.88 0.7894 N
+  354.24 0.8313 N
+  373.61 0.8258 N
+  392.97 0.8180 N
+  412.34 0.7823 N
+  431.70 0.7817 N
+  451.06 0.7963 N
+  470.43 0.8020 N
+  489.79 0.7997 N
+  509.16 0.7996 N
+  528.52 0.8620 N
+  547.88 0.9323 N
+  567.25 0.9879 N
+  586.61 0.9862 N
+  605.98 0.9854 N
+  625.34 0.9953 N
+  644.70  1.037 N
+  664.07  1.117 N
+  683.43  1.182 N
+  702.80  1.221 N
+  722.16  1.224 N
+  741.53  1.244 N
+  760.89  1.246 N
+  780.25  1.274 N
+  799.62  1.275 N
+  818.98  1.289 N
+  838.35  1.278 N
+  857.71  1.284 N
+  877.07  1.275 N
+  896.44  1.270 N
+  915.80  1.247 N
+  935.17  1.234 N
+  954.53  1.258 N
+  973.89  1.275 N
+  993.26  1.265 N
+ 1012.62  1.193 N
+ 1031.99  1.189 N
+ 1051.35  1.268 N
+ 1070.71  1.350 N
+ 1090.08  1.368 N
+ 1109.44  1.322 N
+ 1128.81  1.313 N
+ 1148.17  1.382 N
+ 1167.54  1.433 N
+ 1186.90  1.479 N
+ 1206.26  1.530 N
+ 1225.63  1.652 N
+ 1244.99  1.693 N
+ 1264.36  1.679 N
+ 1283.72  1.616 N
+ 1303.08  1.594 N
+ 1322.45  1.515 N
+ 1341.81  1.439 N
+ 1361.18  1.378 N
+ 1380.54  1.336 N
+ 1399.90  1.302 N
+ 1419.27  1.305 N
+ 1438.63  1.353 N
+ 1458.00  1.407 N
+ 1477.36  1.418 N
+ 1496.72  1.407 N
+ 1516.09  1.379 N
+ 1535.45  1.377 N
+ 1554.82  1.351 N
+ 1574.18  1.318 N
+ 1593.55  1.282 N
+ 1612.91  1.255 N
+ 1632.27  1.236 N
+ 1651.64  1.256 N
+ 1671.00  1.270 N
+ 1690.37  1.293 N
+ 1709.73  1.273 N
+ 1729.09  1.240 N
+ 1748.46  1.214 N
+ 1767.82  1.158 N
+ 1787.19  1.116 N
+ 1806.55  1.066 N
+ 1825.91  1.060 N
+ 1845.28  1.087 N
+ 1864.64  1.107 N
+ 1884.01  1.068 N
+ 1903.37  1.030 N
+ 1922.73  1.002 N
+ 1942.10  1.031 N
+ 1961.46  1.051 N
+ 1980.83  1.107 N
+ 2000.19  1.146 N
+ 2019.56  1.179 N
+ 2038.92  1.159 N
+ 2058.28  1.133 N
+ 2077.65  1.093 N
+ 2097.01  1.062 N
+ 2116.38  1.063 N
+ 2135.74  1.100 N
+ 2155.10  1.059 N
+ 2174.47 0.9974 N
+ 2193.83 0.9310 N
+ 2213.20 0.9424 N
+ 2232.56 0.9179 N
+ 2251.92 0.8708 N
+ 2271.29 0.8654 N
+ 2290.65 0.8899 N
+ 2310.02 0.9062 N
+ 2329.38 0.8656 N
+ 2348.74 0.8124 N
+ 2368.11 0.8042 N
+ 2387.47 0.8136 N
+ 2406.84 0.8205 N
+ 2426.20 0.7928 N
+ 2445.56 0.7649 N
+ 2464.93 0.7452 N
+ 2484.29 0.7326 N
+ 2503.66 0.7265 N
+ 2523.02 0.7388 N
+ 2542.39 0.7946 N
+ 2561.75 0.8644 N
+ 2581.11 0.8809 N
+ 2600.48 0.8456 N
+ 2619.84 0.7855 N
+ 2639.21 0.8034 N
+ 2658.57 0.8445 N
+ 2677.93 0.8879 N
+ 2697.30 0.9097 N
+ 2716.66 0.9058 N
+ 2736.03 0.9199 N
+ 2755.39 0.9216 N
+ 2774.75 0.9387 N
+ 2794.12 0.9593 N
+ 2813.48 0.9422 N
+ 2832.85 0.8935 N
+ 2852.21 0.8051 N
+ 2871.57 0.7255 N
+ 2890.94 0.6635 N
+ 2910.30 0.6272 N
+ 2929.67 0.6425 N
+ 2949.03 0.6706 N
+ 2968.40 0.6991 N
+ 2987.76 0.7070 N
+ 3007.12 0.7077 N
+ 3026.49 0.7208 N
+ 3045.85 0.7543 N
+ 3065.22 0.7805 N
+ 3084.58 0.8078 N
+ 3103.94 0.8149 N
+ 3123.31 0.8320 N
+ 3142.67 0.8246 N
+ 3162.04 0.8298 N
+ 3181.40 0.8335 N
+ 3200.76 0.8508 N
+ 3220.13 0.8797 N
+ 3239.49 0.9070 N
+ 3258.86 0.8829 N
+ 3278.22 0.8617 N
+ 3297.58 0.8399 N
+ 3316.95 0.8954 N
+ 3336.31 0.9488 N
+ 3355.68 0.9951 N
+ 3375.04 0.9949 N
+ 3394.41 0.9955 N
+ 3413.77  1.025 N
+ 3433.13  1.073 N
+ 3452.50  1.102 N
+ 3471.86  1.063 N
+ 3491.23  1.017 N
+ 3510.59 0.9808 N
+ 3529.95 0.9378 N
+ 3549.32 0.8669 N
+ 3568.68 0.8109 N
+ 3588.05 0.8167 N
+ 3607.41 0.8462 N
+ 3626.77 0.8081 N
+ 3646.14 0.7699 N
+ 3665.50 0.7382 N
+ 3684.87 0.7504 N
+ 3704.23 0.7780 N
+ 3723.59 0.8030 N
+ 3742.96 0.8441 N
+ 3762.32 0.8632 N
+ 3781.69 0.9074 N
+ 3801.05 0.9309 N
+ 3820.42 0.9671 N
+ 3839.78 0.9716 N
+ 3859.14 0.9449 N
+ 3878.51 0.8774 N
+ 3897.87 0.8368 N
+ 3917.24 0.8050 N
+ 3936.60 0.7949 N
+ 3955.96 0.7378 N
+ 3975.33 0.7090 N
+ 3994.69 0.6947 N
+ 4014.06 0.7104 N
+enddata
+-4002.68  1.009 F
+-3983.31  1.013 N
+-3963.95  1.007 N
+-3944.58  1.037 N
+-3925.22  1.071 N
+-3905.86  1.111 N
+-3886.49  1.104 N
+-3867.13  1.100 N
+-3847.76  1.094 N
+-3828.40  1.075 N
+-3809.03  1.082 N
+-3789.67  1.077 N
+-3770.31  1.116 N
+-3750.94  1.152 N
+-3731.58  1.199 N
+-3712.21  1.243 N
+-3692.85  1.250 N
+-3673.49  1.302 N
+-3654.12  1.271 N
+-3634.76  1.265 N
+-3615.39  1.234 N
+-3596.03  1.282 N
+-3576.67  1.320 N
+-3557.30  1.350 N
+-3537.94  1.331 N
+-3518.57  1.272 N
+-3499.21  1.191 N
+-3479.85  1.110 N
+-3460.48  1.051 N
+-3441.12  1.000 N
+-3421.75 0.9664 N
+-3402.39 0.9241 N
+-3383.03 0.8956 N
+-3363.66 0.8809 N
+-3344.30 0.9157 N
+-3324.93 0.9650 N
+-3305.57 0.9814 N
+-3286.20 0.9900 N
+-3266.84 0.9886 N
+-3247.48  1.056 N
+-3228.11  1.049 N
+-3208.75  1.044 N
+-3189.38 0.9793 N
+-3170.02 0.9069 N
+-3150.66 0.8391 N
+-3131.29 0.8375 N
+-3111.93 0.8773 N
+-3092.56 0.8916 N
+-3073.20 0.8527 N
+-3053.84 0.8325 N
+-3034.47 0.8213 N
+-3015.11 0.8150 N
+-2995.74 0.7942 N
+-2976.38 0.7803 N
+-2957.02 0.7434 N
+-2937.65 0.7214 N
+-2918.29 0.6691 N
+-2898.92 0.6474 N
+-2879.56 0.5968 N
+-2860.19 0.5845 N
+-2840.83 0.5704 N
+-2821.47 0.6118 N
+-2802.10 0.6346 N
+-2782.74 0.6594 N
+-2763.37 0.6527 N
+-2744.01 0.6630 N
+-2724.65 0.6773 N
+-2705.28 0.6994 N
+-2685.92 0.7134 N
+-2666.55 0.7015 N
+-2647.19 0.7004 N
+-2627.83 0.7047 N
+-2608.46 0.7602 N
+-2589.10 0.8042 N
+-2569.73 0.8497 N
+-2550.37 0.8734 N
+-2531.01 0.8777 N
+-2511.64 0.8845 N
+-2492.28 0.8885 N
+-2472.91 0.8912 N
+-2453.55 0.8819 N
+-2434.18 0.8581 N
+-2414.82 0.8548 N
+-2395.46 0.8622 N
+-2376.09 0.8855 N
+-2356.73 0.9028 N
+-2337.36 0.8827 N
+-2318.00 0.8578 N
+-2298.64 0.8246 N
+-2279.27 0.8170 N
+-2259.91 0.8161 N
+-2240.54 0.8036 N
+-2221.18 0.7757 N
+-2201.82 0.7321 N
+-2182.45 0.7020 N
+-2163.09 0.6636 N
+-2143.72 0.6251 N
+-2124.36 0.5961 N
+-2105.00 0.5629 N
+-2085.63 0.5218 N
+-2066.27 0.4713 N
+-2046.90 0.4438 N
+-2027.54 0.4175 N
+-2008.17 0.4002 N
+-1988.81 0.3820 N
+-1969.45 0.3603 N
+-1950.08 0.3415 N
+-1930.72 0.3296 N
+-1911.35 0.3142 N
+-1891.99 0.2957 N
+-1872.63 0.2787 N
+-1853.26 0.2728 N
+-1833.90 0.2540 N
+-1814.53 0.2747 N
+-1795.17 0.2733 N
+-1775.81 0.2765 N
+-1756.44 0.2498 N
+-1737.08 0.2463 N
+-1717.71 0.2695 N
+-1698.35 0.2833 N
+-1678.99 0.2838 N
+-1659.62 0.3056 N
+-1640.26 0.3204 N
+-1620.89 0.3393 N
+-1601.53 0.3336 N
+-1582.17 0.3337 N
+-1562.80 0.3762 N
+-1543.44 0.3687 N
+-1524.07 0.3657 N
+-1504.71 0.3314 N
+-1485.34 0.3158 N
+-1465.98 0.2901 N
+-1446.62 0.2935 N
+-1427.25 0.2772 N
+-1407.89 0.2576 N
+-1388.52 0.2205 N
+-1369.16 0.2112 N
+-1349.80 0.2051 N
+-1330.43 0.1978 N
+-1311.07 0.1784 N
+-1291.70 0.1778 N
+-1272.34 0.1700 N
+-1252.98 0.1803 N
+-1233.61 0.1886 N
+-1214.25 0.2021 N
+-1194.88 0.2212 N
+-1175.52 0.1998 N
+-1156.16 0.1536 N
+-1136.79 0.1071 N
+-1117.43 0.1019 N
+-1098.06 0.1097 N
+-1078.70 0.1284 N
+-1059.33 0.1430 N
+-1039.97 0.1664 N
+-1020.61 0.1590 N
+-1001.24 0.1621 N
+ -981.88 0.1654 N
+ -962.51 0.1827 N
+ -943.15 0.1860 N
+ -923.79 0.1964 N
+ -904.42 0.2096 N
+ -885.06 0.2118 N
+ -865.69 0.2001 N
+ -846.33 0.1797 N
+ -826.97 0.1755 N
+ -807.60 0.1913 N
+ -788.24 0.2015 N
+ -768.87 0.2236 N
+ -749.51 0.2375 N
+ -730.15 0.2501 N
+ -710.78 0.2291 N
+ -691.42 0.2081 N
+ -672.05 0.2235 N
+ -652.69 0.2434 N
+ -633.32 0.2504 N
+ -613.96 0.2312 N
+ -594.60 0.2341 N
+ -575.23 0.2361 N
+ -555.87 0.2411 N
+ -536.50 0.2280 N
+ -517.14 0.2320 N
+ -497.78 0.2280 N
+ -478.41 0.2560 N
+ -459.05 0.2739 N
+ -439.68 0.2903 N
+ -420.32 0.2893 N
+ -400.96 0.2945 N
+ -381.59 0.2949 N
+ -362.23 0.2839 N
+ -342.86 0.2756 N
+ -323.50 0.2834 N
+ -304.14 0.2799 N
+ -284.77 0.2846 N
+ -265.41 0.2976 N
+ -246.04 0.3197 N
+ -226.68 0.3472 N
+ -207.31 0.3539 N
+ -187.95 0.3606 N
+ -168.59 0.3607 N
+ -149.22 0.3757 N
+ -129.86 0.3873 N
+ -110.49 0.4015 N
+  -91.13 0.4161 N
+  -71.77 0.4263 N
+  -52.40 0.3898 N
+  -33.04 0.3605 N
+  -13.67 0.3355 N
+    5.69 0.3651 N
+   25.05 0.4014 N
+   44.42 0.4812 N
+   63.78 0.5421 N
+   83.15 0.5797 N
+  102.51 0.5871 N
+  121.87 0.6015 N
+  141.24 0.6097 N
+  160.60 0.6183 N
+  179.97 0.6292 N
+  199.33 0.6422 N
+  218.69 0.6579 N
+  238.06 0.6583 N
+  257.42 0.6766 N
+  276.79 0.6927 N
+  296.15 0.7080 N
+  315.52 0.7240 N
+  334.88 0.7354 N
+  354.24 0.7588 N
+  373.61 0.7707 N
+  392.97 0.8014 N
+  412.34 0.7977 N
+  431.70 0.7864 N
+  451.06 0.7821 N
+  470.43 0.8104 N
+  489.79 0.8505 N
+  509.16 0.8506 N
+  528.52 0.8951 N
+  547.88 0.9431 N
+  567.25  1.007 N
+  586.61  1.046 N
+  605.98  1.085 N
+  625.34  1.139 N
+  644.70  1.156 N
+  664.07  1.207 N
+  683.43  1.217 N
+  702.80  1.235 N
+  722.16  1.251 N
+  741.53  1.294 N
+  760.89  1.319 N
+  780.25  1.337 N
+  799.62  1.348 N
+  818.98  1.373 N
+  838.35  1.371 N
+  857.71  1.353 N
+  877.07  1.330 N
+  896.44  1.344 N
+  915.80  1.363 N
+  935.17  1.366 N
+  954.53  1.345 N
+  973.89  1.348 N
+  993.26  1.319 N
+ 1012.62  1.275 N
+ 1031.99  1.256 N
+ 1051.35  1.283 N
+ 1070.71  1.294 N
+ 1090.08  1.256 N
+ 1109.44  1.271 N
+ 1128.81  1.284 N
+ 1148.17  1.362 N
+ 1167.54  1.378 N
+ 1186.90  1.419 N
+ 1206.26  1.474 N
+ 1225.63  1.568 N
+ 1244.99  1.644 N
+ 1264.36  1.634 N
+ 1283.72  1.587 N
+ 1303.08  1.552 N
+ 1322.45  1.539 N
+ 1341.81  1.507 N
+ 1361.18  1.465 N
+ 1380.54  1.417 N
+ 1399.90  1.424 N
+ 1419.27  1.427 N
+ 1438.63  1.434 N
+ 1458.00  1.415 N
+ 1477.36  1.396 N
+ 1496.72  1.366 N
+ 1516.09  1.337 N
+ 1535.45  1.345 N
+ 1554.82  1.337 N
+ 1574.18  1.320 N
+ 1593.55  1.262 N
+ 1612.91  1.229 N
+ 1632.27  1.242 N
+ 1651.64  1.278 N
+ 1671.00  1.321 N
+ 1690.37  1.312 N
+ 1709.73  1.293 N
+ 1729.09  1.268 N
+ 1748.46  1.278 N
+ 1767.82  1.247 N
+ 1787.19  1.218 N
+ 1806.55  1.142 N
+ 1825.91  1.123 N
+ 1845.28  1.123 N
+ 1864.64  1.146 N
+ 1884.01  1.166 N
+ 1903.37  1.124 N
+ 1922.73  1.141 N
+ 1942.10  1.159 N
+ 1961.46  1.208 N
+ 1980.83  1.153 N
+ 2000.19  1.098 N
+ 2019.56  1.076 N
+ 2038.92  1.145 N
+ 2058.28  1.196 N
+ 2077.65  1.194 N
+ 2097.01  1.136 N
+ 2116.38  1.072 N
+ 2135.74  1.032 N
+ 2155.10 0.9809 N
+ 2174.47 0.9395 N
+ 2193.83 0.9126 N
+ 2213.20 0.9287 N
+ 2232.56 0.9372 N
+ 2251.92 0.9307 N
+ 2271.29 0.9158 N
+ 2290.65 0.9390 N
+ 2310.02 0.9284 N
+ 2329.38 0.8939 N
+ 2348.74 0.8439 N
+ 2368.11 0.8388 N
+ 2387.47 0.8485 N
+ 2406.84 0.8435 N
+ 2426.20 0.8063 N
+ 2445.56 0.7856 N
+ 2464.93 0.7723 N
+ 2484.29 0.7771 N
+ 2503.66 0.7728 N
+ 2523.02 0.7539 N
+ 2542.39 0.7562 N
+ 2561.75 0.7676 N
+ 2581.11 0.7823 N
+ 2600.48 0.7809 N
+ 2619.84 0.7877 N
+ 2639.21 0.8007 N
+ 2658.57 0.8423 N
+ 2677.93 0.8583 N
+ 2697.30 0.8990 N
+ 2716.66 0.9053 N
+ 2736.03 0.9199 N
+ 2755.39 0.9230 N
+ 2774.75 0.9297 N
+ 2794.12 0.9268 N
+ 2813.48 0.8898 N
+ 2832.85 0.8380 N
+ 2852.21 0.7911 N
+ 2871.57 0.7351 N
+ 2890.94 0.7100 N
+ 2910.30 0.6929 N
+ 2929.67 0.6999 N
+ 2949.03 0.7060 N
+ 2968.40 0.7027 N
+ 2987.76 0.7054 N
+ 3007.12 0.6967 N
+ 3026.49 0.6968 N
+ 3045.85 0.7129 N
+ 3065.22 0.7481 N
+ 3084.58 0.7711 N
+ 3103.94 0.7782 N
+ 3123.31 0.8015 N
+ 3142.67 0.8191 N
+ 3162.04 0.8181 N
+ 3181.40 0.8156 N
+ 3200.76 0.8339 N
+ 3220.13 0.8542 N
+ 3239.49 0.8488 N
+ 3258.86 0.8402 N
+ 3278.22 0.8545 N
+ 3297.58 0.8594 N
+ 3316.95 0.8834 N
+ 3336.31 0.9010 N
+ 3355.68 0.9237 N
+ 3375.04 0.9532 N
+ 3394.41 0.9965 N
+ 3413.77  1.081 N
+ 3433.13  1.121 N
+ 3452.50  1.111 N
+ 3471.86  1.050 N
+ 3491.23  1.004 N
+ 3510.59 0.9877 N
+ 3529.95 0.9537 N
+ 3549.32 0.8896 N
+ 3568.68 0.8231 N
+ 3588.05 0.7939 N
+ 3607.41 0.7935 N
+ 3626.77 0.7979 N
+ 3646.14 0.7881 N
+ 3665.50 0.7699 N
+ 3684.87 0.7435 N
+ 3704.23 0.7372 N
+ 3723.59 0.7465 N
+ 3742.96 0.7950 N
+ 3762.32 0.8616 N
+ 3781.69 0.9165 N
+ 3801.05 0.9648 N
+ 3820.42 0.9787 N
+ 3839.78 0.9717 N
+ 3859.14 0.9367 N
+ 3878.51 0.8762 N
+ 3897.87 0.8529 N
+ 3917.24 0.8187 N
+ 3936.60 0.8005 N
+ 3955.96 0.7563 N
+ 3975.33 0.7294 N
+ 3994.69 0.7184 N
+ 4014.06 0.7186 N
+enddata
+-4002.68 0.9896 F
+-3983.31 0.9797 N
+-3963.95 0.9916 N
+-3944.58 0.9996 N
+-3925.22  1.103 N
+-3905.86  1.175 N
+-3886.49  1.191 N
+-3867.13  1.139 N
+-3847.76  1.123 N
+-3828.40  1.094 N
+-3809.03  1.105 N
+-3789.67  1.131 N
+-3770.31  1.168 N
+-3750.94  1.191 N
+-3731.58  1.210 N
+-3712.21  1.245 N
+-3692.85  1.250 N
+-3673.49  1.251 N
+-3654.12  1.227 N
+-3634.76  1.236 N
+-3615.39  1.243 N
+-3596.03  1.278 N
+-3576.67  1.280 N
+-3557.30  1.259 N
+-3537.94  1.216 N
+-3518.57  1.165 N
+-3499.21  1.141 N
+-3479.85  1.102 N
+-3460.48  1.059 N
+-3441.12  1.014 N
+-3421.75 0.9725 N
+-3402.39 0.9449 N
+-3383.03 0.9100 N
+-3363.66 0.8739 N
+-3344.30 0.8873 N
+-3324.93 0.9241 N
+-3305.57 0.9832 N
+-3286.20  1.024 N
+-3266.84  1.059 N
+-3247.48  1.066 N
+-3228.11  1.044 N
+-3208.75  1.014 N
+-3189.38 0.9974 N
+-3170.02 0.9828 N
+-3150.66 0.9505 N
+-3131.29 0.9253 N
+-3111.93 0.8940 N
+-3092.56 0.8760 N
+-3073.20 0.8666 N
+-3053.84 0.8654 N
+-3034.47 0.8529 N
+-3015.11 0.8230 N
+-2995.74 0.8280 N
+-2976.38 0.8310 N
+-2957.02 0.8178 N
+-2937.65 0.7612 N
+-2918.29 0.7204 N
+-2898.92 0.6928 N
+-2879.56 0.6715 N
+-2860.19 0.6519 N
+-2840.83 0.6461 N
+-2821.47 0.6652 N
+-2802.10 0.7103 N
+-2782.74 0.7274 N
+-2763.37 0.7266 N
+-2744.01 0.6930 N
+-2724.65 0.6967 N
+-2705.28 0.6851 N
+-2685.92 0.6862 N
+-2666.55 0.6912 N
+-2647.19 0.7244 N
+-2627.83 0.7468 N
+-2608.46 0.7797 N
+-2589.10 0.8091 N
+-2569.73 0.8329 N
+-2550.37 0.8317 N
+-2531.01 0.8351 N
+-2511.64 0.8455 N
+-2492.28 0.9205 N
+-2472.91 0.9397 N
+-2453.55 0.9465 N
+-2434.18 0.8813 N
+-2414.82 0.8952 N
+-2395.46 0.9692 N
+-2376.09 0.9948 N
+-2356.73 0.9572 N
+-2337.36 0.8597 N
+-2318.00 0.8436 N
+-2298.64 0.8591 N
+-2279.27 0.8338 N
+-2259.91 0.7966 N
+-2240.54 0.7582 N
+-2221.18 0.7401 N
+-2201.82 0.7296 N
+-2182.45 0.6938 N
+-2163.09 0.6874 N
+-2143.72 0.6417 N
+-2124.36 0.6194 N
+-2105.00 0.5752 N
+-2085.63 0.5101 N
+-2066.27 0.4435 N
+-2046.90 0.4087 N
+-2027.54 0.4193 N
+-2008.17 0.4394 N
+-1988.81 0.4043 N
+-1969.45 0.3756 N
+-1950.08 0.3284 N
+-1930.72 0.3093 N
+-1911.35 0.2897 N
+-1891.99 0.2532 N
+-1872.63 0.2373 N
+-1853.26 0.2095 N
+-1833.90 0.2032 N
+-1814.53 0.2156 N
+-1795.17 0.2166 N
+-1775.81 0.2408 N
+-1756.44 0.2560 N
+-1737.08 0.2771 N
+-1717.71 0.2796 N
+-1698.35 0.2901 N
+-1678.99 0.2933 N
+-1659.62 0.2936 N
+-1640.26 0.3187 N
+-1620.89 0.3334 N
+-1601.53 0.3603 N
+-1582.17 0.3585 N
+-1562.80 0.3749 N
+-1543.44 0.3385 N
+-1524.07 0.3016 N
+-1504.71 0.2699 N
+-1485.34 0.3106 N
+-1465.98 0.3449 N
+-1446.62 0.3750 N
+-1427.25 0.3794 N
+-1407.89 0.3323 N
+-1388.52 0.3111 N
+-1369.16 0.2613 N
+-1349.80 0.2200 N
+-1330.43 0.1752 N
+-1311.07 0.1720 N
+-1291.70 0.1849 N
+-1272.34 0.1983 N
+-1252.98 0.2015 N
+-1233.61 0.2117 N
+-1214.25 0.2280 N
+-1194.88 0.2505 N
+-1175.52 0.2233 N
+-1156.16 0.1774 N
+-1136.79 0.1373 N
+-1117.43 0.1234 N
+-1098.06 0.1235 N
+-1078.70 0.1256 N
+-1059.33 0.1424 N
+-1039.97 0.1484 N
+-1020.61 0.1563 N
+-1001.24 0.1565 N
+ -981.88 0.1474 N
+ -962.51 0.1400 N
+ -943.15 0.1661 N
+ -923.79 0.1924 N
+ -904.42 0.2033 N
+ -885.06 0.2088 N
+ -865.69 0.2123 N
+ -846.33 0.2022 N
+ -826.97 0.1762 N
+ -807.60 0.1673 N
+ -788.24 0.1800 N
+ -768.87 0.2052 N
+ -749.51 0.2183 N
+ -730.15 0.2193 N
+ -710.78 0.2176 N
+ -691.42 0.1972 N
+ -672.05 0.2064 N
+ -652.69 0.2299 N
+ -633.32 0.2613 N
+ -613.96 0.2578 N
+ -594.60 0.2391 N
+ -575.23 0.2394 N
+ -555.87 0.2254 N
+ -536.50 0.2259 N
+ -517.14 0.2073 N
+ -497.78 0.2070 N
+ -478.41 0.2090 N
+ -459.05 0.2292 N
+ -439.68 0.2595 N
+ -420.32 0.2794 N
+ -400.96 0.2854 N
+ -381.59 0.2694 N
+ -362.23 0.2753 N
+ -342.86 0.2791 N
+ -323.50 0.3057 N
+ -304.14 0.2985 N
+ -284.77 0.3129 N
+ -265.41 0.3358 N
+ -246.04 0.3458 N
+ -226.68 0.3485 N
+ -207.31 0.3318 N
+ -187.95 0.3541 N
+ -168.59 0.3766 N
+ -149.22 0.4049 N
+ -129.86 0.4351 N
+ -110.49 0.4360 N
+  -91.13 0.4426 N
+  -71.77 0.4503 N
+  -52.40 0.4478 N
+  -33.04 0.4122 N
+  -13.67 0.3559 N
+    5.69 0.3730 N
+   25.05 0.4242 N
+   44.42 0.5006 N
+   63.78 0.5438 N
+   83.15 0.5854 N
+  102.51 0.6141 N
+  121.87 0.6306 N
+  141.24 0.6276 N
+  160.60 0.6374 N
+  179.97 0.6715 N
+  199.33 0.7055 N
+  218.69 0.6923 N
+  238.06 0.6595 N
+  257.42 0.6863 N
+  276.79 0.7355 N
+  296.15 0.7745 N
+  315.52 0.7660 N
+  334.88 0.7741 N
+  354.24 0.8101 N
+  373.61 0.8311 N
+  392.97 0.8124 N
+  412.34 0.7767 N
+  431.70 0.7544 N
+  451.06 0.7632 N
+  470.43 0.7869 N
+  489.79 0.8297 N
+  509.16 0.8469 N
+  528.52 0.9272 N
+  547.88 0.9822 N
+  567.25  1.046 N
+  586.61  1.033 N
+  605.98  1.047 N
+  625.34  1.081 N
+  644.70  1.116 N
+  664.07  1.137 N
+  683.43  1.192 N
+  702.80  1.248 N
+  722.16  1.281 N
+  741.53  1.279 N
+  760.89  1.294 N
+  780.25  1.308 N
+  799.62  1.325 N
+  818.98  1.308 N
+  838.35  1.275 N
+  857.71  1.265 N
+  877.07  1.279 N
+  896.44  1.296 N
+  915.80  1.280 N
+  935.17  1.260 N
+  954.53  1.300 N
+  973.89  1.350 N
+  993.26  1.334 N
+ 1012.62  1.280 N
+ 1031.99  1.218 N
+ 1051.35  1.268 N
+ 1070.71  1.345 N
+ 1090.08  1.391 N
+ 1109.44  1.344 N
+ 1128.81  1.283 N
+ 1148.17  1.292 N
+ 1167.54  1.342 N
+ 1186.90  1.386 N
+ 1206.26  1.449 N
+ 1225.63  1.510 N
+ 1244.99  1.563 N
+ 1264.36  1.551 N
+ 1283.72  1.541 N
+ 1303.08  1.520 N
+ 1322.45  1.496 N
+ 1341.81  1.484 N
+ 1361.18  1.492 N
+ 1380.54  1.484 N
+ 1399.90  1.447 N
+ 1419.27  1.401 N
+ 1438.63  1.361 N
+ 1458.00  1.353 N
+ 1477.36  1.356 N
+ 1496.72  1.378 N
+ 1516.09  1.356 N
+ 1535.45  1.347 N
+ 1554.82  1.343 N
+ 1574.18  1.348 N
+ 1593.55  1.348 N
+ 1612.91  1.291 N
+ 1632.27  1.226 N
+ 1651.64  1.167 N
+ 1671.00  1.171 N
+ 1690.37  1.196 N
+ 1709.73  1.214 N
+ 1729.09  1.202 N
+ 1748.46  1.200 N
+ 1767.82  1.211 N
+ 1787.19  1.203 N
+ 1806.55  1.187 N
+ 1825.91  1.124 N
+ 1845.28  1.093 N
+ 1864.64  1.101 N
+ 1884.01  1.098 N
+ 1903.37  1.069 N
+ 1922.73  1.014 N
+ 1942.10  1.027 N
+ 1961.46  1.068 N
+ 1980.83  1.121 N
+ 2000.19  1.117 N
+ 2019.56  1.141 N
+ 2038.92  1.127 N
+ 2058.28  1.114 N
+ 2077.65  1.099 N
+ 2097.01  1.133 N
+ 2116.38  1.126 N
+ 2135.74  1.064 N
+ 2155.10 0.9369 N
+ 2174.47 0.9144 N
+ 2193.83 0.9420 N
+ 2213.20 0.9713 N
+ 2232.56 0.9841 N
+ 2251.92 0.9683 N
+ 2271.29 0.9775 N
+ 2290.65 0.9556 N
+ 2310.02 0.9541 N
+ 2329.38 0.9170 N
+ 2348.74 0.9027 N
+ 2368.11 0.8438 N
+ 2387.47 0.8564 N
+ 2406.84 0.8387 N
+ 2426.20 0.8356 N
+ 2445.56 0.8163 N
+ 2464.93 0.7878 N
+ 2484.29 0.7719 N
+ 2503.66 0.7371 N
+ 2523.02 0.7064 N
+ 2542.39 0.7089 N
+ 2561.75 0.7418 N
+ 2581.11 0.7688 N
+ 2600.48 0.7842 N
+ 2619.84 0.7941 N
+ 2639.21 0.8479 N
+ 2658.57 0.8751 N
+ 2677.93 0.8778 N
+ 2697.30 0.8783 N
+ 2716.66 0.8604 N
+ 2736.03 0.8652 N
+ 2755.39 0.8633 N
+ 2774.75 0.8850 N
+ 2794.12 0.8888 N
+ 2813.48 0.8538 N
+ 2832.85 0.7860 N
+ 2852.21 0.7188 N
+ 2871.57 0.6774 N
+ 2890.94 0.6825 N
+ 2910.30 0.6963 N
+ 2929.67 0.7173 N
+ 2949.03 0.7241 N
+ 2968.40 0.7142 N
+ 2987.76 0.7090 N
+ 3007.12 0.7049 N
+ 3026.49 0.7190 N
+ 3045.85 0.7561 N
+ 3065.22 0.7519 N
+ 3084.58 0.7832 N
+ 3103.94 0.7683 N
+ 3123.31 0.8216 N
+ 3142.67 0.8127 N
+ 3162.04 0.8135 N
+ 3181.40 0.8145 N
+ 3200.76 0.8364 N
+ 3220.13 0.8900 N
+ 3239.49 0.8990 N
+ 3258.86 0.8927 N
+ 3278.22 0.8657 N
+ 3297.58 0.8750 N
+ 3316.95 0.9102 N
+ 3336.31 0.9444 N
+ 3355.68 0.9769 N
+ 3375.04 0.9977 N
+ 3394.41  1.025 N
+ 3413.77  1.045 N
+ 3433.13  1.065 N
+ 3452.50  1.072 N
+ 3471.86  1.053 N
+ 3491.23  1.009 N
+ 3510.59 0.9630 N
+ 3529.95 0.9301 N
+ 3549.32 0.9206 N
+ 3568.68 0.9195 N
+ 3588.05 0.9063 N
+ 3607.41 0.8533 N
+ 3626.77 0.7817 N
+ 3646.14 0.7308 N
+ 3665.50 0.7243 N
+ 3684.87 0.7288 N
+ 3704.23 0.7668 N
+ 3723.59 0.8112 N
+ 3742.96 0.8632 N
+ 3762.32 0.8863 N
+ 3781.69 0.8873 N
+ 3801.05 0.8886 N
+ 3820.42 0.9313 N
+ 3839.78 0.9434 N
+ 3859.14 0.9067 N
+ 3878.51 0.8489 N
+ 3897.87 0.8358 N
+ 3917.24 0.8369 N
+ 3936.60 0.7733 N
+ 3955.96 0.7127 N
+ 3975.33 0.6902 N
+ 3994.69 0.6936 N
+ 4014.06 0.6976 N
+enddata
+boxes
+(1987c4.lis \100 1987c4.i >> 1987c4.ps 2014-04-04 07:12:59)
+pageheader 0 ne {show} {pop} ifelse end %dict
+((start printing) ) pr time
+showpage
+/#copies 1 def (end of job ) pr time
+vmsave restore
+
